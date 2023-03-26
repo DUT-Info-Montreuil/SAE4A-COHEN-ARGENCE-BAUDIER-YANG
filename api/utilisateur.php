@@ -63,13 +63,13 @@ function sous_fonction_inscription()
 
 function connexion() {
     $login = htmlspecialchars($_POST['login']);
-    $verif_login = Connexion::$bdd->prepare('select password from Utilisateurs where login = :login or email = :login or numeroDeTel = :login');
+    $verif_login = Connexion::$bdd->prepare('select idUser, password from Utilisateurs where login = :login or email = :login or numeroDeTel = :login');
     $verif_login->bindParam(':login', $login);
     $verif_login->execute();
     $infos = $verif_login->fetch();
     if ($verif_login->rowCount() == 0 || !password_verify($_POST['mdp'], $infos['password'])) {
         $reponse = array(
-            'message' => "connexion validee"
+            'idUser' => $infos['idUser']
         );
     } else {
         $reponse = array(
@@ -81,16 +81,16 @@ function connexion() {
 }
 
 function infos_utilisateur() {
-    $login = htmlspecialchars($_POST['login']);
-    $verif_login = Connexion::$bdd->prepare('select * from Utilisateurs where login = :login');
-    $verif_login->bindParam(':login', $login);
-    $verif_login->execute();
-    if ($verif_login->rowCount() == 0) {
+    $idUser = htmlspecialchars($_POST['idUser']);
+    $infos = Connexion::$bdd->prepare('select * from Utilisateurs where idUser = :idUser');
+    $infos->bindParam(':login', $idUser);
+    $infos->execute();
+    if ($infos->rowCount() == 0) {
         $reponse = array(
             'message' => "Utilisateur pas trouve"
         );
     } else {
-        $reponse = $verif_login->fetch();
+        $reponse = $infos->fetch();
     }
     echo json_encode($reponse);
 }
