@@ -21,6 +21,7 @@ function inscription()
 
 function sous_fonction_inscription()
 {
+    http_response_code(404);
     $login = htmlspecialchars($_GET['login']);
     if (strlen($login) == 0 || is_numeric($login))
         return 'Nom d\'utilisateur indisponible';
@@ -58,6 +59,7 @@ function sous_fonction_inscription()
     $sql = 'INSERT INTO Utilisateurs VALUES(NULL, ?, ?, ?, ?, ?, ?, 1)';
     $statement = Connexion::$bdd->prepare($sql);
     $statement->execute(array($login, $_GET['nom'], $_GET['prenom'], $_GET['tel'], $email, $mdp));
+    http_response_code(200);
     return 'inscription validee';
 }
 
@@ -69,10 +71,12 @@ function connexion()
     $verif_login->execute();
     $infos = $verif_login->fetch();
     if ($verif_login->rowCount() == 1 && password_verify($_GET['mdp'], $infos['password'])) {
+        http_response_code(200);
         $reponse = array(
             'idUser' => $infos['idUser']
         );
     } else {
+        http_response_code(404);
         $reponse = array(
             'message' => "Login ou mot de passe incorrect"
         );
@@ -88,10 +92,12 @@ function infos_utilisateur()
     $infos->bindParam(':idUser', $idUser);
     $infos->execute();
     if ($infos->rowCount() == 0) {
+        http_response_code(404);
         $reponse = array(
             'message' => "Utilisateur pas trouve"
         );
     } else {
+        http_response_code(200);
         $reponse = $infos->fetch();
     }
     echo json_encode($reponse);
