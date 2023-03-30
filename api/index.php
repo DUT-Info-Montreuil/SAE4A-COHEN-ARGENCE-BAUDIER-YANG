@@ -3,6 +3,7 @@ session_start();
 
 include_once('connexion.php');
 include_once('utilisateur.php');
+include_once('burger.php');
 
 Connexion::initConnexion();
 try {
@@ -17,6 +18,9 @@ try {
             case "infos_utilisateur":
                 infos_utilisateur();
                 break; //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur&idUser=?
+            case "burgers":
+                get_burgers();
+            break; //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers
             default:
                 throw new Exception("La requete n'est pas valide, vérifiez l'url");
         }
