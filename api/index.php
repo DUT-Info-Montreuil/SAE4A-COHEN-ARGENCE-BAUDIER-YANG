@@ -15,14 +15,17 @@ try {
             case "connexion":
                 connexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
                 break; 
+            case "deconnexion":
+                deconnexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/deconnexion
+                break;
             case "infos_utilisateur":
-                infos_utilisateur(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur&idUser=?
+                infos_utilisateur(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
                 break; 
             case "burgers":
-                if(isset($_GET['idUser']))
-                    get_burgers_par_idUser(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&idUser=?
+                if($_GET['categorie'] == 'personnalise')
+                    get_burgers_par_idUser(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=personalise
                 else
-                    get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers
+                    get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=classique
             break; 
             case "burger":
                 get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&idBurger=?

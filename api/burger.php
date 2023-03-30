@@ -19,10 +19,10 @@ function get_burgers_classiques()
     echo json_encode($reponse);
 }
 
-function get_burgers_par_idUser()
+function get_burgers_personnalises()
 {
     $burgers = Connexion::$bdd->prepare('select * from Burgers where idUser = ?');
-    $burgers->execute(array($_GET['idUser']));
+    $burgers->execute(array($_SESSION['idUser']));
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
         $reponse = $burgers->fetchAll();

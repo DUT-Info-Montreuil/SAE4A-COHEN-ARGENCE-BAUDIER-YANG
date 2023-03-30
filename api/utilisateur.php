@@ -71,6 +71,7 @@ function connexion()
     $verif_login->execute();
     $infos = $verif_login->fetch();
     if ($verif_login->rowCount() == 1 && password_verify($_GET['mdp'], $infos['password'])) {
+        $_SESSION['idUser'] = $infos['idUser'];
         http_response_code(200);
         $reponse = array(
             'idUser' => $infos['idUser']
@@ -85,20 +86,42 @@ function connexion()
     echo json_encode($reponse);
 }
 
-function infos_utilisateur()
+function deconnexion()
 {
-    $idUser = htmlspecialchars($_GET['idUser']);
-    $infos = Connexion::$bdd->prepare('select idUser, login, nom, prenom, tel, email, idType from Utilisateurs where idUser = :idUser');
-    $infos->bindParam(':idUser', $idUser);
-    $infos->execute();
-    if ($infos->rowCount() == 0) {
-        http_response_code(404);
+    if(isset($_SESSION['idUser'])) {
+        unset($_SESSION['idUser']);
+        http_response_code(200);
         $reponse = array(
-            'message' => "Utilisateur pas trouve"
+            'message' => "Deconnexion confirme"
         );
     } else {
-        http_response_code(200);
-        $reponse = $infos->fetch();
+        http_response_code(404);
+        $reponse = array(
+            'message' => "Pas connecte"
+        );
+    }
+    echo json_encode($reponse);
+}
+
+function infos_utilisateur()
+{
+    if (isset($_SESSION['idUser'])) {
+        $infos = Connexion::$bdd->prepare('select idUser, login, nom, prenom, tel, email, idType from Utilisateurs where idUser = ?');
+        $infos->execute(array($_SESSION['idUser']));
+        if ($infos->rowCount() == 0) {
+            http_response_code(404);
+            $reponse = array(
+                'message' => "Utilisateur pas trouve"
+            );
+        } else {
+            http_response_code(200);
+            $reponse = $infos->fetch();
+        }
+    } else {
+        http_response_code(404);
+        $reponse = array(
+            'message' => "Veuillez vous connecter"
+        );
     }
     echo json_encode($reponse);
 }
