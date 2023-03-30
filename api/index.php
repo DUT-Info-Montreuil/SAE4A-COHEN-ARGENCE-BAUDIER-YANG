@@ -10,17 +10,23 @@ try {
     if (!empty($_GET['requete'])) {
         switch ($_GET['requete']) {
             case "inscription":
-                inscription();
-                break; //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/inscription&login=?&nom=?&prenom=?&tel=?&email=?&mdp=?conf_mdp=?
+                inscription(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/inscription&login=?&nom=?&prenom=?&tel=?&email=?&mdp=?conf_mdp=?
+                break; 
             case "connexion":
-                connexion();
-                break; //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
+                connexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
+                break; 
             case "infos_utilisateur":
-                infos_utilisateur();
-                break; //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur&idUser=?
+                infos_utilisateur(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur&idUser=?
+                break; 
             case "burgers":
-                get_burgers();
-            break; //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers
+                if(isset($_GET['idUser']))
+                    get_burgers_par_idUser(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&idUser=?
+                else
+                    get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers
+            break; 
+            case "burger":
+                get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&idBurger=?
+            break; 
             default:
                 throw new Exception("La requete n'est pas valide, vérifiez l'url");
         }
