@@ -66,62 +66,36 @@ function sous_fonction_inscription()
 function connexion()
 {
     $login = htmlspecialchars($_GET['login']);
-    $verif_login = Connexion::$bdd->prepare('select idUser, password from Utilisateurs where login = :login or email = :login or tel = :login');
+    $verif_login = Connexion::$bdd->prepare('select idUser, password, idType from Utilisateurs where login = :login or email = :login or tel = :login');
     $verif_login->bindParam(':login', $login);
     $verif_login->execute();
     $infos = $verif_login->fetch();
     if ($verif_login->rowCount() == 1 && password_verify($_GET['mdp'], $infos['password'])) {
-        $_SESSION['idUser'] = $infos['idUser'];
         http_response_code(200);
-        $reponse = array(
-            'idUser' => $infos['idUser']
-        );
+        creer_token($infos['idUser'], $infos['idType']);
     } else {
         http_response_code(404);
         $reponse = array(
             'message' => "Login ou mot de passe incorrect"
         );
+        echo json_encode($reponse);
     }
-
-    echo json_encode($reponse);
-}
-
-function deconnexion()
-{
-    if(isset($_SESSION['idUser'])) {
-        unset($_SESSION['idUser']);
-        http_response_code(200);
-        $reponse = array(
-            'message' => "Deconnexion confirme"
-        );
-    } else {
-        http_response_code(404);
-        $reponse = array(
-            'message' => "Pas connecte"
-        );
-    }
-    echo json_encode($reponse);
 }
 
 function infos_utilisateur()
 {
-    if (isset($_SESSION['idUser'])) {
-        $infos = Connexion::$bdd->prepare('select idUser, login, nom, prenom, tel, email, idType from Utilisateurs where idUser = ?');
-        $infos->execute(array($_SESSION['idUser']));
-        if ($infos->rowCount() == 0) {
-            http_response_code(404);
-            $reponse = array(
-                'message' => "Utilisateur pas trouve"
-            );
-        } else {
-            http_response_code(200);
-            $reponse = $infos->fetch();
-        }
-    } else {
+    global $token;
+    $infos = Connexion::$bdd->prepare('select idUser, login, nom, prenom, tel, email, idType from Utilisateurs where idUser = ?');
+    $infos->execute(array($token['idUser']));
+    if ($infos->rowCount() == 0) {
         http_response_code(404);
         $reponse = array(
-            'message' => "Veuillez vous connecter"
+            'message' => "Utilisateur pas trouve"
         );
+    } else {
+        http_response_code(200);
+        $reponse = $infos->fetch();
     }
+
     echo json_encode($reponse);
 }
