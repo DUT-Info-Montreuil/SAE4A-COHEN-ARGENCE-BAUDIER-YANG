@@ -10,14 +10,10 @@ function get_burgers()
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
         $reponse = $burgers->fetchAll();
+        echo json_encode($reponse);
     } else {
-        http_response_code(404);
-        $reponse = array(
-            'message' => "Erreur dans la base de donnee"
-        );
+        message(404, 'Erreur dans la base de donnee');
     }
-
-    echo json_encode($reponse);
 }
 
 function get_burgers_classiques()
@@ -27,14 +23,10 @@ function get_burgers_classiques()
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
         $reponse = $burgers->fetchAll();
+        echo json_encode($reponse);
     } else {
-        http_response_code(404);
-        $reponse = array(
-            'message' => "Erreur dans la base de donnee"
-        );
+        message(404, 'Erreur dans la base de donnee');
     }
-
-    echo json_encode($reponse);
 }
 
 function get_burgers_personnalises()
@@ -46,18 +38,18 @@ function get_burgers_personnalises()
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
         $reponse = $burgers->fetchAll();
+        echo json_encode($reponse);
     } else {
-        http_response_code(404);
-        $reponse = array(
-            'message' => "Aucun burgers ou idUser incorrecte"
-        );
+        message(404, 'Aucun burgers ou idUser incorrecte');
     }
-
-    echo json_encode($reponse);
 }
 
 function get_burger()
 {
+    if (isset($_GET['idBurger'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?");
+        exit();
+    }
     global $token;
     $burger = Connexion::$bdd->prepare('select idBurger, nomBurger, description from Burgers natural join Utilisateurs where idBurger = ? and (idUser = ? or idType = 2)');
     $burger->execute(array($_GET['idBurger'], $token['idUser']));
@@ -67,13 +59,8 @@ function get_burger()
         $ingredients->execute(array($_GET['idBurger']));
         $burger['ingredients'] = $ingredients->fetchAll();
         http_response_code(200);
-        $reponse = $burger;
+        echo json_encode($burger);
     } else {
-        http_response_code(404);
-        $reponse = array(
-            'message' => "Burger pas trouve"
-        );
+        message(404, 'Burger pas trouve');
     }
-
-    echo json_encode($reponse);
 }

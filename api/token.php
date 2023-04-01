@@ -33,6 +33,7 @@ function creer_token($idUser, $idType)
             'HS512'
         )
     );
+    http_response_code(200);
     echo json_encode($reponse);
 }
 

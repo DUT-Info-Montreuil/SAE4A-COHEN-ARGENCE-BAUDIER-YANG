@@ -13,72 +13,88 @@ function mdp_correcte()
 
 function inscription()
 {
-    $reponse = array(
-        'message' => sous_fonction_inscription()
-    );
-    echo json_encode($reponse);
-}
+    if (isset($_GET['login'], $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $_GET['mdp'], $_GET['conf_mdp'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/inscription&login=?&nom=?&prenom=?&tel=?&email=?&mdp=?conf_mdp=?");
+        exit();
+    }
 
-function sous_fonction_inscription()
-{
-    http_response_code(404);
     $login = htmlspecialchars($_GET['login']);
-    if (strlen($login) == 0 || is_numeric($login))
-        return 'Nom d\'utilisateur indisponible';
+    if (strlen($login) == 0 || is_numeric($login)) {
+        message(404, 'Nom d\'utilisateur indisponible');
+        exit();
+    }
     $verif_login = Connexion::$bdd->prepare('select * from Utilisateurs where login = ?');
     $verif_login->execute(array($login));
-    if ($verif_login->rowCount() > 0)
-        return 'Nom d\'utilisateur indisponible';
+    if ($verif_login->rowCount() > 0) {
+        message(404, 'Nom d\'utilisateur indisponible');
+        exit();
+    }
 
-    if (!ctype_alpha($_GET['nom']) || !ctype_alpha($_GET['prenom']))
-        return 'Nom ou prenom invalide';
+    if (!ctype_alpha($_GET['nom']) || !ctype_alpha($_GET['prenom'])) {
+        message(404, 'Nom ou prenom invalide');
+        exit();
+    }
 
-    if (strlen($_GET['tel']) != 10 || !is_numeric($_GET['tel']))
-        return 'Numero de telephone invalide';
+    if (strlen($_GET['tel']) != 10 || !is_numeric($_GET['tel'])) {
+        message(404, 'Numero de telephone invalide');
+        exit();
+    }
+
 
     $verif_tel = Connexion::$bdd->prepare('select * from Utilisateurs where tel = ?');
     $verif_tel->execute(array($_GET['tel']));
-    if ($verif_tel->rowCount() > 0)
-        return 'Le numero de telephone est dejà utilisee';
+    if ($verif_tel->rowCount() > 0) {
+        message(404, 'Le numero de telephone est dejà utilisee');
+        exit();
+    }
 
-    $email = $_GET['email'];
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-        return 'L\'adressse e-mail est invalide';
+
+    if (!filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
+        message(404, 'L\'adressse e-mail est invalide');
+        exit();
+    }
+
     $verif_email = Connexion::$bdd->prepare('select * from Utilisateurs where email = ?');
-    $verif_email->execute(array($email));
-    if ($verif_email->rowCount() > 0)
-        return 'L\'adresse e-mail est dejà utilisee';
+    $verif_email->execute(array($_GET['email']));
+    if ($verif_email->rowCount() > 0) {
+        message(404, 'L\'adresse e-mail est dejà utilisee');
+        exit();
+    }
 
-    if (!mdp_correcte())
-        return '8 caractères minimum avec au moins une lettre minuscule, une lettre majuscule et un chiffre';
 
-    if ($_GET['mdp'] != $_GET['conf_mdp'])
-        return 'Les mots de passe ne correspondent pas';
+    if (!mdp_correcte()) {
+        message(404, '8 caractères minimum avec au moins une lettre minuscule, une lettre majuscule et un chiffre');
+        exit();
+    }
+
+
+    if ($_GET['mdp'] != $_GET['conf_mdp']) {
+        message(404, 'Les mots de passe ne correspondent pas');
+        exit();
+    }
+
 
     $mdp = password_hash($_GET['mdp'], PASSWORD_DEFAULT);
-    $sql = 'INSERT INTO Utilisateurs VALUES(NULL, ?, ?, ?, ?, ?, ?, 1)';
-    $statement = Connexion::$bdd->prepare($sql);
-    $statement->execute(array($login, $_GET['nom'], $_GET['prenom'], $_GET['tel'], $email, $mdp));
-    http_response_code(200);
-    return 'inscription validee';
+    $statement = Connexion::$bdd->prepare('INSERT INTO Utilisateurs VALUES(NULL, ?, ?, ?, ?, ?, ?, 1)');
+    $statement->execute(array($login, $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $mdp));
+    message(200, 'inscription validee');
 }
 
 function connexion()
 {
+    if (isset($_GET['login'], $_GET['mdp'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?");
+        exit();
+    }
     $login = htmlspecialchars($_GET['login']);
     $verif_login = Connexion::$bdd->prepare('select idUser, password, idType from Utilisateurs where login = :login or email = :login or tel = :login');
     $verif_login->bindParam(':login', $login);
     $verif_login->execute();
     $infos = $verif_login->fetch();
     if ($verif_login->rowCount() == 1 && password_verify($_GET['mdp'], $infos['password'])) {
-        http_response_code(200);
         creer_token($infos['idUser'], $infos['idType']);
     } else {
-        http_response_code(404);
-        $reponse = array(
-            'message' => "Login ou mot de passe incorrect"
-        );
-        echo json_encode($reponse);
+        message(404, "Login ou mot de passe incorrect");
     }
 }
 
@@ -88,14 +104,10 @@ function infos_utilisateur()
     $infos = Connexion::$bdd->prepare('select idUser, login, nom, prenom, tel, email, idType from Utilisateurs where idUser = ?');
     $infos->execute(array($token['idUser']));
     if ($infos->rowCount() == 0) {
-        http_response_code(404);
-        $reponse = array(
-            'message' => "Utilisateur pas trouve"
-        );
+        message(404, "Utilisateur pas trouve");
     } else {
         http_response_code(200);
         $reponse = $infos->fetch();
+        echo json_encode($reponse);
     }
-
-    echo json_encode($reponse);
 }

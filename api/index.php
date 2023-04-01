@@ -26,14 +26,20 @@ try {
                         get_burgers();
                     break;
                 case "burger":
-                    get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&idBurger=?
+                    if (isset($_GET['action'])) {
+                        switch ($_GET['action']) {
+                            case "burger":
+                                get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?
+                                break;
+                            default:
+                                message(400, "La requete n'est pas valide, vérifiez l'url.");
+                        }
+                    } else {
+                        message(400, "La requete n'est pas valide, vérifiez l'url. Manque la variable action.");
+                    }
                     break;
                 default:
-                    http_response_code(400);
-                    $reponse = array(
-                        'message' => "La requete n'est pas valide, vérifiez l'url."
-                    );
-                    echo json_encode($reponse);
+                    message(400, "La requete n'est pas valide, vérifiez l'url.");
             }
         } else {
             switch ($_GET['requete']) {
@@ -44,24 +50,21 @@ try {
                     connexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
                     break;
                 default:
-                    http_response_code(400);
-                    $reponse = array(
-                        'message' => "La requete n'est pas valide, vérifiez l'url. Vous devez vous connecter."
-                    );
-                    echo json_encode($reponse);
+                    message(400, "La requete n'est pas valide, vérifiez l'url. Vous devez vous connecter ou token invalide");
             }
         }
     } else {
-        http_response_code(400);
-        $reponse = array(
-            'message' => "La requete n'est pas valide, vérifiez l'url."
-        );
-        echo json_encode($reponse);
+        message(400, "La requete n'est pas valide, vérifiez l'url.");
     }
 } catch (Exception $e) {
-    http_response_code(400);
+    message(400, $e->getMessage());
+}
+
+function message($code, $message)
+{
+    http_response_code($code);
     $reponse = array(
-        'message' => $e->getMessage()
+        'message' => $message
     );
     echo json_encode($reponse);
 }
