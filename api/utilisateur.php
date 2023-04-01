@@ -13,7 +13,7 @@ function mdp_correcte()
 
 function inscription()
 {
-    if (isset($_GET['login'], $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $_GET['mdp'], $_GET['conf_mdp'])) {
+    if (!isset($_GET['login'], $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $_GET['mdp'], $_GET['conf_mdp'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/inscription&login=?&nom=?&prenom=?&tel=?&email=?&mdp=?conf_mdp=?");
         exit();
     }
@@ -82,7 +82,7 @@ function inscription()
 
 function connexion()
 {
-    if (isset($_GET['login'], $_GET['mdp'])) {
+    if (!isset($_GET['login'], $_GET['mdp'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?");
         exit();
     }

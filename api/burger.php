@@ -46,7 +46,7 @@ function get_burgers_personnalises()
 
 function get_burger()
 {
-    if (isset($_GET['idBurger'])) {
+    if (!isset($_GET['idBurger'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?");
         exit();
     }

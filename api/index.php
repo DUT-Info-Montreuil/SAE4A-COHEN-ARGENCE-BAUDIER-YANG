@@ -28,7 +28,7 @@ try {
                 case "burger":
                     if (isset($_GET['action'])) {
                         switch ($_GET['action']) {
-                            case "burger":
+                            case "get":
                                 get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?
                                 break;
                             default:
