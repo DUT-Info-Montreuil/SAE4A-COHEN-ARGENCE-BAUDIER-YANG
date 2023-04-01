@@ -17,10 +17,13 @@ try {
                     infos_utilisateur(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
                     break;
                 case "burgers":
-                    if (isset($_GET['categorie']) && $_GET['categorie'] == 'personnalise')
-                        get_burgers_personnalises(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=personnalise
+                    if (isset($_GET['categorie']))
+                        if ($_GET['categorie'] == 'personnalise')
+                            get_burgers_personnalises(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=personnalise
+                        else
+                            get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=classique
                     else
-                        get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=classique
+                        get_burgers();
                     break;
                 case "burger":
                     get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&idBurger=?
