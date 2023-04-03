@@ -31,6 +31,12 @@ try {
                             case "get":
                                 get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?
                                 break;
+                            case "add":
+                                add_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=add&nomBurger=?&description=?&ingredients=?
+                                break;
+                            case "update":
+                                update_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)
+                                break;
                             default:
                                 message(400, "La requete n'est pas valide, vérifiez l'url.");
                         }
