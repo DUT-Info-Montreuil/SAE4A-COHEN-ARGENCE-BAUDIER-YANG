@@ -4,6 +4,7 @@ session_start();
 include_once('connexion.php');
 include_once('utilisateur.php');
 include_once('burger.php');
+include_once('ingredient.php');
 include_once('token.php');
 
 header('Content-Type: application/json');
@@ -15,6 +16,12 @@ try {
             switch ($_GET['requete']) {
                 case "infos_utilisateur":
                     infos_utilisateur(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
+                    break;
+                case "ingredients":
+                    get_ingredients(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredients
+                    break;
+                case "ingredient":
+                    get_ingredient(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&idIngredient=?
                     break;
                 case "burgers":
                     if (isset($_GET['categorie']))
