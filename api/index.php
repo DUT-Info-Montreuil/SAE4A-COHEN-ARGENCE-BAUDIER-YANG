@@ -5,6 +5,7 @@ include_once('connexion.php');
 include_once('utilisateur.php');
 include_once('burger.php');
 include_once('ingredient.php');
+include_once('commande.php');
 include_once('token.php');
 
 header('Content-Type: application/json');
@@ -40,6 +41,28 @@ try {
                                 break;
                             case "add":
                                 add_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=add&nomBurger=?&description=?&ingredients=?
+                                break;
+                            case "update":
+                                update_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)
+                                break;
+                            case "delete":
+                                delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
+                                break;
+                            default:
+                                message(400, "La requete n'est pas valide, vérifiez l'url.");
+                        }
+                    } else {
+                        message(400, "La requete n'est pas valide, vérifiez l'url. Manque la variable action.");
+                    }
+                    break;
+                case "commande":
+                    if (isset($_GET['action'])) {
+                        switch ($_GET['action']) {
+                            case "get":
+                                get_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=get&idCommande=?
+                                break;
+                            case "add":
+                                add_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=add&idBurgers=?,?,?
                                 break;
                             case "update":
                                 update_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)

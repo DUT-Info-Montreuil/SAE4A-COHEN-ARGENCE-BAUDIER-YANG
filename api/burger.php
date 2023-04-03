@@ -5,7 +5,7 @@ header('Content-type: application/json; charset=utf-8');
 function get_burgers()
 {
     global $token;
-    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description from Burgers natural join Utilisateurs where idType = 2 or idUser = ?');
+    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idType = 2 or idUser = ?');
     $burgers->execute(array($token['idUser']));
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
@@ -18,7 +18,7 @@ function get_burgers()
 
 function get_burgers_classiques()
 {
-    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description from Burgers natural join Utilisateurs where idType = 2');
+    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idType = 2');
     $burgers->execute();
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
@@ -33,7 +33,7 @@ function get_burgers_personnalises()
 {
     global $token;
     echo $token['idUser'];
-    $burgers = Connexion::$bdd->prepare('select * from Burgers where idUser = ?');
+    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers where idUser = ?');
     $burgers->execute(array($token['idUser']));
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
@@ -51,11 +51,11 @@ function get_burger()
         exit();
     }
     global $token;
-    $burger = Connexion::$bdd->prepare('select idBurger, nomBurger, description from Burgers natural join Utilisateurs where idBurger = ? and (idUser = ? or idType = 2)');
+    $burger = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idBurger = ? and (idUser = ? or idType = 2)');
     $burger->execute(array($_GET['idBurger'], $token['idUser']));
     if ($burger->rowCount() > 0) {
         $burger = $burger->fetch();
-        $ingredients = Connexion::$bdd->prepare('select idIngredient, nomIngredient, quantite from estCompose natural join Ingredients where idBurger = ?');
+        $ingredients = Connexion::$bdd->prepare('select idIngredient, nomIngredient, quantite, prix, (prix*quantite) as total from estCompose natural join Ingredients where idBurger = ?');
         $ingredients->execute(array($_GET['idBurger']));
         $burger['ingredients'] = $ingredients->fetchAll();
         http_response_code(200);
@@ -64,6 +64,7 @@ function get_burger()
         message(404, 'Burger pas trouve');
     }
 }
+
 function add_burger()
 {
     if (!isset($_GET['nomBurger'], $_GET['description'], $_GET['ingredients'])) {
@@ -75,30 +76,11 @@ function add_burger()
 
     try {
         global $token;
-        $sth = Connexion::$bdd->prepare('insert into Burgers Values(NULL, ?, ?, ?)');
+        $sth = Connexion::$bdd->prepare('insert into Burgers Values(NULL, ?, ?, ?, 0)');
         $sth->execute(array($_GET['nomBurger'], $_GET['description'], $token['idUser']));
 
         $id = Connexion::$bdd->lastInsertId();
-        $array = explode(",", $_GET['ingredients']);
-        $sql = 'insert into estCompose Values';
-
-        $arr = array();
-        foreach ($array as $key) {
-            if (array_key_exists($key, $arr)) {
-                $arr[$key]++;
-            } else {
-                $arr[$key] = 1;
-            }
-        }
-
-        foreach ($arr as $idIngredient => $quantite) {
-            $sql = $sql . '(' . $id . ', ' . $idIngredient . ', ' . $quantite . '),';
-        }
-        $sql = substr($sql, 0, strlen($sql) - 1);
-
-        $sth = Connexion::$bdd->prepare($sql);
-        $sth->execute();
-
+        add_ingredients_dans_burger($id);
         Connexion::$bdd->commit();
     } catch (PDOException $e) {
         Connexion::$bdd->rollBack();
@@ -148,30 +130,43 @@ function update_burger()
     if (isset($_GET['ingredients'])) {
         $sth = Connexion::$bdd->prepare('DELETE FROM estCompose WHERE idBurger = ?');
         $sth->execute(array($_GET['idBurger']));
-
-        $array = explode(",", $_GET['ingredients']);
-        $sql = 'insert into estCompose Values';
-
-        $arr = array();
-        foreach ($array as $key) {
-            if (array_key_exists($key, $arr)) {
-                $arr[$key]++;
-            } else {
-                $arr[$key] = 1;
-            }
-        }
-
-        foreach ($arr as $idIngredient => $quantite) {
-            $sql = $sql . '(' . $_GET['idBurger'] . ', ' . $idIngredient . ', ' . $quantite . '),';
-        }
-        $sql = substr($sql, 0, strlen($sql) - 1);
-
-        $sth = Connexion::$bdd->prepare($sql);
-        $sth->execute();
+        add_ingredients_dans_burger($_GET['idBurger']);
     }
     message(200, "Burger modifie.");
 }
 
+function add_ingredients_dans_burger($id)
+{
+    $array = explode(",", $_GET['ingredients']);
+    $sql = 'insert into estCompose Values';
+
+    $arr = array();
+    foreach ($array as $key) {
+        if (array_key_exists($key, $arr)) {
+            $arr[$key]++;
+        } else {
+            $arr[$key] = 1;
+        }
+    }
+
+    foreach ($arr as $idIngredient => $quantite) {
+        $sql = $sql . '(' . $id . ', ' . $idIngredient . ', ' . $quantite . '),';
+    }
+    $sql = substr($sql, 0, strlen($sql) - 1);
+
+    $sth = Connexion::$bdd->prepare($sql);
+    $sth->execute();
+
+    $ingredients = Connexion::$bdd->prepare('select idIngredient, nomIngredient, quantite, prix, (prix*quantite) as total from estCompose natural join Ingredients where idBurger = ?');
+    $ingredients->execute(array($id));
+
+    $prix = 0;
+    foreach ($ingredients as $ingredient) {
+        $prix += $ingredient['total'];
+    }
+    $sth = Connexion::$bdd->prepare('update Burgers set prix = ? where idBurger = ?');
+    $sth->execute(array($prix, $id));
+}
 
 function delete_burger()
 {
