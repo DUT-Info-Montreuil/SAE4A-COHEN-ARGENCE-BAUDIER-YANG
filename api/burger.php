@@ -171,3 +171,25 @@ function update_burger()
     }
     message(200, "Burger modifie.");
 }
+
+
+function delete_burger()
+{
+    if (!isset($_GET['idBurger'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?");
+        exit();
+    }
+    global $token;
+    $burger = Connexion::$bdd->prepare('select * from Burgers where idBurger = ? and idUser = ?');
+    $burger->execute(array($_GET['idBurger'], $token['idUser']));
+    if ($burger->rowCount() > 0) {
+        $sth = Connexion::$bdd->prepare('DELETE FROM estCompose WHERE idBurger = ?');
+        $sth->execute(array($_GET['idBurger']));
+
+        $sth = Connexion::$bdd->prepare('DELETE FROM Burgers WHERE idBurger = ?');
+        $sth->execute(array($_GET['idBurger']));
+        message(200, "Burger supprime.");
+    } else {
+        message(404, 'Burger pas trouve ou pas le votre');
+    }
+}

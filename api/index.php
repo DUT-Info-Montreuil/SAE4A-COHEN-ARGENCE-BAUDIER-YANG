@@ -37,6 +37,9 @@ try {
                             case "update":
                                 update_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)
                                 break;
+                            case "delete":
+                                delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
+                                break;
                             default:
                                 message(400, "La requete n'est pas valide, vérifiez l'url.");
                         }
