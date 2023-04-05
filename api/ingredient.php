@@ -18,7 +18,7 @@ function get_ingredients()
 function get_ingredient()
 {
     if (!isset($_GET['idIngredient'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&idIngredient=?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&idIngredient=?");
         exit();
     }
     $sth = Connexion::$bdd->prepare('select * from Ingredients where idIngredient = ?');

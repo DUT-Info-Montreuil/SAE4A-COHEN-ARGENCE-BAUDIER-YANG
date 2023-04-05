@@ -20,7 +20,7 @@ function get_commandes()
 function get_commande()
 {
     if (!isset($_GET['idCommande'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=get&idCommande=?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=get&idCommande=?");
         exit();
     }
     global $token;
@@ -41,7 +41,7 @@ function get_commande()
 function add_commande()
 {
     if (!isset($_GET['idBurgers'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=add&idBurgers=?,?,?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=add&idBurgers=?,?,?");
         exit();
     }
 

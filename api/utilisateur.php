@@ -11,10 +11,29 @@ function mdp_correcte()
     return $containsLowerCaseLetter && $containsUpperCaseLetter && $containsDigit && $correctSize;
 }
 
+function adresse_correcte() {
+    // Vérifier la validité de la syntaxe de l'adresse
+    if (!preg_match('/^[a-zA-Z0-9\s-]+$/', $_GET['adresse'])) {
+        return false;
+    }
+
+    // Vérifier la validité de la syntaxe de la ville
+    if (!preg_match('/^[a-zA-Z\s-]+$/', $_GET['ville'])) {
+        return false;
+    }
+
+    // Vérifier la validité du code postal
+    if (!preg_match('/^(0[1-9]|[1-9][0-9])[0-9]{3}$/', $_GET['codePostale'])) {
+        return false;
+    }
+
+    return true;
+}
+
 function inscription()
 {
-    if (!isset($_GET['login'], $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $_GET['mdp'], $_GET['conf_mdp'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/inscription&login=?&nom=?&prenom=?&tel=?&email=?&mdp=?conf_mdp=?");
+    if (!isset($_GET['login'], $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $_GET['mdp'], $_GET['conf_mdp'], $_GET['adresse'], $_GET['ville'], $_GET['codePostale'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/inscription&login=?&nom=?&prenom=?&tel=?&email=?&mdp=?conf_mdp=?&adresse=?&ville=?&codePostale=?");
         exit();
     }
 
@@ -39,7 +58,6 @@ function inscription()
         message(404, 'Numero de telephone invalide');
         exit();
     }
-
 
     $verif_tel = Connexion::$bdd->prepare('select * from Utilisateurs where tel = ?');
     $verif_tel->execute(array($_GET['tel']));
@@ -73,17 +91,22 @@ function inscription()
         exit();
     }
 
+    if (!adresse_correcte()) {
+        message(404, 'L\'adresse est incorrecte');
+        exit();
+    }
 
     $mdp = password_hash($_GET['mdp'], PASSWORD_DEFAULT);
-    $statement = Connexion::$bdd->prepare('INSERT INTO Utilisateurs VALUES(NULL, ?, ?, ?, ?, ?, ?, 1)');
-    $statement->execute(array($login, $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $mdp));
+    $adresse = $_GET['adresse'] . ' ' . $_GET['ville'] . ' ' . $_GET['codePostale'];
+    $statement = Connexion::$bdd->prepare('INSERT INTO Utilisateurs VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, 3)');
+    $statement->execute(array($login, $_GET['nom'], $_GET['prenom'], $_GET['tel'], $_GET['email'], $mdp, $adresse));
     message(200, 'inscription validee');
 }
 
 function connexion()
 {
     if (!isset($_GET['login'], $_GET['mdp'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?");
         exit();
     }
     $login = htmlspecialchars($_GET['login']);
@@ -101,7 +124,7 @@ function connexion()
 function infos_utilisateur()
 {
     global $token;
-    $infos = Connexion::$bdd->prepare('select idUser, login, nom, prenom, tel, email, idType from Utilisateurs where idUser = ?');
+    $infos = Connexion::$bdd->prepare('select idUser, login, nom, prenom, tel, email, adresse, idType from Utilisateurs where idUser = ?');
     $infos->execute(array($token['idUser']));
     if ($infos->rowCount() == 0) {
         message(404, "Utilisateur pas trouve");

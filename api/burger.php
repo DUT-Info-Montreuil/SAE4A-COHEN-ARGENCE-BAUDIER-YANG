@@ -47,7 +47,7 @@ function get_burgers_personnalises()
 function get_burger()
 {
     if (!isset($_GET['idBurger'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?");
         exit();
     }
     global $token;
@@ -68,7 +68,7 @@ function get_burger()
 function add_burger()
 {
     if (!isset($_GET['nomBurger'], $_GET['description'], $_GET['ingredients'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : /http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=add&nomBurger=?&description=?&ingredients=?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : /http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=add&nomBurger=?&description=?&ingredients=?");
         exit();
     }
 
@@ -93,7 +93,7 @@ function add_burger()
 function update_burger()
 {
     if (!isset($_GET['idBurger'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)");
         exit();
     }
 
@@ -171,7 +171,7 @@ function add_ingredients_dans_burger($id)
 function delete_burger()
 {
     if (!isset($_GET['idBurger'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Example : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?");
         exit();
     }
     global $token;
