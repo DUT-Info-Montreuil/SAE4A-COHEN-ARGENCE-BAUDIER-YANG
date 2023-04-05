@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="E-mail"
+        android:text=""
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -17,6 +18,7 @@
         android:layout_below="@+id/editTextEmail"
         android:layout_margin="16dp"
         android:hint="Mot de passe"
+        android:text=""
         android:inputType="textPassword" />
 
     <EditText
@@ -26,6 +28,7 @@
         android:layout_below="@+id/editTextPassword"
         android:layout_margin="16dp"
         android:hint="Confirmez le mot de passe"
+        android:text=""
         android:inputType="textPassword" />
 
     <EditText
@@ -35,6 +38,7 @@
         android:layout_below="@+id/editTextConfirmPassword"
         android:layout_margin="16dp"
         android:hint="Adresse"
+        android:text=""
         android:inputType="textPostalAddress" />
 
     <EditText
@@ -44,6 +48,7 @@
         android:layout_below="@+id/editTextAddress"
         android:layout_margin="16dp"
         android:hint="Prénom"
+        android:text=""
         android:inputType="textPersonName" />
 
     <EditText
@@ -53,6 +58,7 @@
         android:layout_below="@+id/editTextFirstName"
         android:layout_margin="16dp"
         android:hint="Nom de famille"
+        android:text=""
         android:inputType="textPersonName" />
 
     <EditText
@@ -62,6 +68,7 @@
         android:layout_below="@+id/editTextLastName"
         android:layout_margin="16dp"
         android:hint="Numéro de téléphone"
+        android:text=""
         android:inputType="phone" />
 
     <EditText
@@ -71,23 +78,15 @@
         android:layout_below="@+id/editPhoneNumber"
         android:layout_margin="16dp"
         android:hint="Pseudo"
+        android:text=""
         android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/buttonSignup"
+        android:id="@+id/buttonModif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextPseudo"
         android:layout_margin="16dp"
-        android:text="Inscription" />
-
-    <TextView
-        android:id="@+id/textViewLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonSignup"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Déjà un compte ? Connectez-vous" />
+        android:text="Modifier mes informations" />
 
 </RelativeLayout>

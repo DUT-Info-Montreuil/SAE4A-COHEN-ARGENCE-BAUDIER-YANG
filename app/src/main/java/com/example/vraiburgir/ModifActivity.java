@@ -1,15 +1,14 @@
 package com.example.vraiburgir;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class SignupActivity extends AppCompatActivity {
+public class ModifActivity extends AppCompatActivity {
 
     private EditText editTextPseudo;
     private EditText editTextEmail;
@@ -23,7 +22,7 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_modif);
 
         editTextPseudo = findViewById(R.id.editTextPseudo);
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -34,8 +33,19 @@ public class SignupActivity extends AppCompatActivity {
         editTextFirstName = findViewById(R.id.editTextFirstName);
         editTextLastName = findViewById(R.id.editTextLastName);
 
-        Button buttonSignup = findViewById(R.id.buttonSignup);
-        buttonSignup.setOnClickListener(v -> {
+        //TODO
+        //remplacer les setText par des methodes de l'api
+        editTextPseudo.setText("oui");
+        editTextEmail.setText("oui");
+        editTextPassword.setText("oui");
+        editTextConfirmPassword.setText("oui");
+        editTextAddress.setText("oui");
+        editPhoneNumber.setText("oui");
+        editTextFirstName.setText("oui");
+        editTextLastName.setText("oui");
+
+        Button buttonModif = findViewById(R.id.buttonModif);
+        buttonModif.setOnClickListener(view -> {
             // Récupère les valeurs saisies par l'utilisateur
             String pseudo = editTextPseudo.getText().toString().trim();
             String email = editTextEmail.getText().toString().trim();
@@ -86,13 +96,11 @@ public class SignupActivity extends AppCompatActivity {
                 return;
             }
 
-            // Effectue l'action d'inscription avc l'api
+            // Faire un update sur l'user avec l'api
 
             // ...
 
-            // Affiche un message de confirmation
-            Toast.makeText(getApplicationContext(), "Inscription réussie", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Modifications enregistrés", Toast.LENGTH_SHORT).show();
         });
     }
-
 }
