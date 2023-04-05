@@ -3,6 +3,14 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:id="@+id/editTextPseudo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Pseudo"
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,6 +44,15 @@
         android:layout_margin="16dp"
         android:hint="Adresse"
         android:inputType="textPostalAddress" />
+
+    <EditText
+        android:id="@+id/editPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextConfirmPassword"
+        android:layout_margin="16dp"
+        android:hint="Numéro de téléphone"
+        android:inputType="phone" />
 
     <EditText
         android:id="@+id/editTextFirstName"
