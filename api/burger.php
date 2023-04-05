@@ -80,13 +80,13 @@ function add_burger()
 
         $id = Connexion::$bdd->lastInsertId();
         add_ingredients_dans_burger($id);
+        http_response_code(200);
+        echo json_encode($burger);
         Connexion::$bdd->commit();
     } catch (PDOException $e) {
         Connexion::$bdd->rollBack();
         throw $e;
     }
-
-    message(200, "Burger ajoute.");
 }
 
 function update_burger()

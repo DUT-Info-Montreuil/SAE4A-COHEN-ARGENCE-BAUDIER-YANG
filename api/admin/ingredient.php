@@ -4,7 +4,8 @@ header('Content-type: application/json; charset=utf-8');
 function add_ingredient()
 {
     if (!isset($_GET['nomIngredient'], $_GET['prix'], $_GET['idType'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&action=add&nomIngredient=?&prix=?&idType=?");
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=add&nomIngredient=?&prix=?&idType=?");
+        exit();
     }
 
     $sth = Connexion::$bdd->prepare('select * from Ingredients where nomIngredient = ?');
@@ -34,4 +35,28 @@ function add_ingredient()
     $sth = Connexion::$bdd->prepare('insert into Ingredients Values(NULL, ?, ?, 0, ?)');
     $sth->execute(array($_GET['nomIngredient'], $_GET['prix'], $_GET['idType']));
     message(200, "Ingredient ajoute.");
+}
+
+function ajouter_stock() {
+    if (!isset($_GET['idIngredient'], $_GET['quantite'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=ajouter_stock&idIngredient=?&quantite=?");
+        exit();
+    }
+
+    $sth = Connexion::$bdd->prepare('select quantite from Ingredients where idIngredient = ?');
+    $sth->execute(array($_GET['idIngredient']));
+    if ($sth->rowCount() < 0) {
+        message(404, 'L\'ingredient n\'existe pas');
+        exit();
+    }
+
+    if (!is_numeric($_GET['quantite']) || intval($_GET['quantite']) <= 0) {
+        message(404, 'Quantite invalide');
+        exit();
+    }
+
+    $stock = intval($sth->fetch()['quantite']) + intval($_GET['quantite']);
+    $sth = Connexion::$bdd->prepare('update Ingredients set stock = ? where idIngredient = ?');
+    $sth->execute(array($stock, $_GET['idIngredient']));
+    message(200, "Quantite ajoute.");
 }

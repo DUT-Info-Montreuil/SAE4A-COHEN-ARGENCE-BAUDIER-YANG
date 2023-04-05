@@ -14,11 +14,12 @@ Connexion::initConnexion();
 try {
     if (!empty($_GET['requete'])) {
         if (verif_token()) {
+            $requete_trouve = false;
             global $token;
             switch ($token['idType']) {
-                case 1: admin();
+                case 1: if(admin()) $requete_trouve = true;
                 case 2:
-                case 3: utilisateur();
+                case 3: if (!$requete_trouve) utilisateur();
             }
         } else {
             switch ($_GET['requete']) {
@@ -56,14 +57,14 @@ function admin()
             if (isset($_GET['action'])) {
                 switch ($_GET['action']) {
                     case "add":
-                        add_ingredient(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&action=add&nomIngredient=?&prix=?&idType=?
-                        break;
-                    case "update":
-                        update_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)
-                        break;
+                        add_ingredient(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=add&nomIngredient=?&prix=?&idType=?
+                        return true;
+                    case "ajouter_stock":
+                        ajouter_stock(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=ajouter_stock&idIngredient=?&quantite=?
+                        return true;
                     case "delete":
                         delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
-                        break;
+                        return true;
                     default:
                         message(400, "La requete n'est pas valide, verifiez l'url.");
                 }
