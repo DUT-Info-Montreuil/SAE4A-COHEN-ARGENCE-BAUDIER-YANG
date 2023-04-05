@@ -43,7 +43,7 @@ function ajouter_stock() {
         exit();
     }
 
-    $sth = Connexion::$bdd->prepare('select quantite from Ingredients where idIngredient = ?');
+    $sth = Connexion::$bdd->prepare('select stock from Ingredients where idIngredient = ?');
     $sth->execute(array($_GET['idIngredient']));
     if ($sth->rowCount() < 0) {
         message(404, 'L\'ingredient n\'existe pas');
@@ -55,8 +55,8 @@ function ajouter_stock() {
         exit();
     }
 
-    $stock = intval($sth->fetch()['quantite']) + intval($_GET['quantite']);
+    $stock = intval($sth->fetch()['stock']) + intval($_GET['quantite']);
     $sth = Connexion::$bdd->prepare('update Ingredients set stock = ? where idIngredient = ?');
     $sth->execute(array($stock, $_GET['idIngredient']));
-    message(200, "Quantite ajoute.");
+    message(200, "Quantite ajoute.".$stock);
 }
