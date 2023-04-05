@@ -40,14 +40,14 @@ function creer_token($idUser, $idType)
 function verif_token()
 {
     $headers = apache_request_headers();
-    if (!isset($headers['authorization']) || !preg_match('/Bearer\s(\S+)/', $headers['authorization'], $matches)) {
+    if (!isset($headers['Authorization']) || !preg_match('/Bearer\s(\S+)/', $headers['Authorization'], $matches)) {
         header('HTTP/1.0 400 Bad Request');
-        exit;
+        return false;
     } else {
         $jwt = $matches[1];
         if (!$jwt) {
             header('HTTP/1.0 400 Bad Request');
-            //exit;
+            return false;
         } else {
             global $secret_Key;
             global $token;

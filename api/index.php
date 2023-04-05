@@ -55,6 +55,9 @@ try {
                         message(400, "La requete n'est pas valide, vérifiez l'url. Manque la variable action.");
                     }
                     break;
+                case "commandes":
+                    get_commandes(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commandes
+                    break;
                 case "commande":
                     if (isset($_GET['action'])) {
                         switch ($_GET['action']) {
@@ -63,12 +66,6 @@ try {
                                 break;
                             case "add":
                                 add_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=add&idBurgers=?,?,?
-                                break;
-                            case "update":
-                                update_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)
-                                break;
-                            case "delete":
-                                delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
                                 break;
                             default:
                                 message(400, "La requete n'est pas valide, vérifiez l'url.");

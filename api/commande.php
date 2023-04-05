@@ -2,6 +2,21 @@
 include_once('connexion.php');
 header('Content-type: application/json; charset=utf-8');
 
+
+function get_commandes()
+{
+    global $token;
+    $burgers = Connexion::$bdd->prepare('select idCommande, finit, dateCommande, prix from Commande where idUser = ?');
+    $burgers->execute(array($token['idUser']));
+    if ($burgers->rowCount() > 0) {
+        http_response_code(200);
+        $reponse = $burgers->fetchAll();
+        echo json_encode($reponse);
+    } else {
+        message(404, 'Erreur dans la base de donnee');
+    }
+}
+
 function get_commande()
 {
     if (!isset($_GET['idCommande'])) {
