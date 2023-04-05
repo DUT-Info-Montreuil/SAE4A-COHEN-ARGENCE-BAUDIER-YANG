@@ -1,5 +1,4 @@
 <?php
-include_once('connexion.php');
 header('Content-type: application/json; charset=utf-8');
 
 

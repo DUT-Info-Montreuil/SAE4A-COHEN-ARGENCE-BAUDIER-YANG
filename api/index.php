@@ -16,7 +16,7 @@ try {
         if (verif_token()) {
             global $token;
             switch ($token['idType']) {
-                case 1: 
+                case 1: admin();
                 case 2:
                 case 3: utilisateur();
             }
@@ -29,11 +29,11 @@ try {
                     connexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
                     break;
                 default:
-                    message(400, "La requete n'est pas valide, vérifiez l'url. Vous devez vous connecter ou token invalide");
+                    message(400, "La requete n'est pas valide, verifiez l'url. Vous devez vous connecter ou token invalide");
             }
         }
     } else {
-        message(400, "La requete n'est pas valide, vérifiez l'url.");
+        message(400, "La requete n'est pas valide, verifiez l'url.");
     }
 } catch (Exception $e) {
     message(400, $e->getMessage());
@@ -48,9 +48,33 @@ function message($code, $message)
     echo json_encode($reponse);
 }
 
+function admin()
+{
+    include_once('admin/ingredient.php');
+    switch ($_GET['requete']) {
+        case "admin_ingredient":
+            if (isset($_GET['action'])) {
+                switch ($_GET['action']) {
+                    case "add":
+                        add_ingredient(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&action=add&nomIngredient=?&prix=?&idType=?
+                        break;
+                    case "update":
+                        update_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)
+                        break;
+                    case "delete":
+                        delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
+                        break;
+                    default:
+                        message(400, "La requete n'est pas valide, verifiez l'url.");
+                }
+            } else {
+                message(400, "La requete n'est pas valide, verifiez l'url. Manque la variable action.");
+            }
+    }
+}
+
 function utilisateur() 
 {
-
     switch ($_GET['requete']) {
         case "infos_utilisateur":
             infos_utilisateur(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
@@ -86,10 +110,10 @@ function utilisateur()
                         delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
                         break;
                     default:
-                        message(400, "La requete n'est pas valide, vérifiez l'url.");
+                        message(400, "La requete n'est pas valide, verifiez l'url.");
                 }
             } else {
-                message(400, "La requete n'est pas valide, vérifiez l'url. Manque la variable action.");
+                message(400, "La requete n'est pas valide, verifiez l'url. Manque la variable action.");
             }
             break;
         case "commandes":
@@ -105,13 +129,13 @@ function utilisateur()
                         add_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=add&idBurgers=?,?,?
                         break;
                     default:
-                        message(400, "La requete n'est pas valide, vérifiez l'url.");
+                        message(400, "La requete n'est pas valide, verifiez l'url.");
                 }
             } else {
-                message(400, "La requete n'est pas valide, vérifiez l'url. Manque la variable action.");
+                message(400, "La requete n'est pas valide, verifiez l'url. Manque la variable action.");
             }
             break;
         default:
-            message(400, "La requete n'est pas valide, vérifiez l'url.");
+            message(400, "La requete n'est pas valide, verifiez l'url.");
     }
 }
