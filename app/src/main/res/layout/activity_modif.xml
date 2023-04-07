@@ -12,30 +12,10 @@
         android:inputType="textEmailAddress" />
 
     <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextEmail"
-        android:layout_margin="16dp"
-        android:hint="Mot de passe"
-        android:text=""
-        android:inputType="textPassword" />
-
-    <EditText
-        android:id="@+id/editTextConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextPassword"
-        android:layout_margin="16dp"
-        android:hint="Confirmez le mot de passe"
-        android:text=""
-        android:inputType="textPassword" />
-
-    <EditText
         android:id="@+id/editTextAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextConfirmPassword"
+        android:layout_below="@+id/editTextEmail"
         android:layout_margin="16dp"
         android:hint="Adresse"
         android:text=""
@@ -87,6 +67,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextPseudo"
         android:layout_margin="16dp"
-        android:text="Modifier mes informations" />
+        android:backgroundTint="@color/teal_700"
+        android:text="Valider" />
+
+    <Button
+        android:id="@+id/buttonModifMpd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonModif"
+        android:layout_margin="16dp"
+        android:text="Modifier le mot de passe" />
 
 </RelativeLayout>
