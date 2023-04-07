@@ -20,7 +20,7 @@
         android:background="@color/cheddar">
     </SearchView>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp">
@@ -46,14 +46,24 @@
 
             <Button
                 android:id="@+id/button"
-                android:backgroundTint="@color/cheddar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Créer ton burger !"
                 android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp" />
+                android:backgroundTint="@color/cheddar"
+                android:text="Créer ton burger !" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listeBurger"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="32dp"
+                tools:layout_editor_absoluteY="256dp"
+                android:nestedScrollingEnabled="false"/>
+
         </LinearLayout>
-    </ScrollView>
+
+    </androidx.core.widget.NestedScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

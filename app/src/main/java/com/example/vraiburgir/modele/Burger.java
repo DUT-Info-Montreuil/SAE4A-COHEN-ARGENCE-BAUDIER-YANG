@@ -11,7 +11,7 @@ public class Burger {
     private int idUser;
     private float prixBurger;
 
-    public Burger(int idBurger, String nomBurger, String descriptionBurger, ArrayList<Ingredient> listeIngredient, int idUser) {
+    public Burger(int idBurger, String nomBurger, String descriptionBurger, ArrayList<Ingredient> listeIngredient, int idUser, int prixBurger) {
         this.idBurger = idBurger;
         this.nomBurger = nomBurger;
         this.descriptionBurger = descriptionBurger;
@@ -20,4 +20,7 @@ public class Burger {
         this.prixBurger = prixBurger;
     }
 
+    public String getNomBurger() {
+        return nomBurger;
+    }
 }
