@@ -87,8 +87,14 @@ function cuisinier()
         case "commandes_a_faire":
             get_commandes_a_faire(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
             return true;
+        case "contenu_commande":
+            contenu_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/contenu_commande&idCommande=?
+            return true;
         case "valider_commande":
             valider_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/valider_commande&idCommande=?
+            return true;
+        case "contenu_burger":
+            contenu_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/contenu_burger&idBurger=?
             return true;
     }
 }
