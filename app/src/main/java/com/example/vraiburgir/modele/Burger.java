@@ -23,4 +23,12 @@ public class Burger {
     public String getNomBurger() {
         return nomBurger;
     }
+
+    public String getDescriptionBurger() {
+        return descriptionBurger;
+    }
+
+    public float getPrixBurger() {
+        return prixBurger;
+    }
 }

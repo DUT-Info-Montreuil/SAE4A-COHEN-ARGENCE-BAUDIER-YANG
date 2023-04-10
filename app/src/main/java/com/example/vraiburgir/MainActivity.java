@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,10 +21,9 @@ import com.example.vraiburgir.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements BurgerAdapter.ItemClickListener  {
+public class MainActivity extends AppCompatActivity  {
 
     private ActivityMainBinding binding;
-    private BurgerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,30 +31,6 @@ public class MainActivity extends AppCompatActivity implements BurgerAdapter.Ite
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // TEMPORAIRE FAUT UTILISER L'API
-        // data to populate the RecyclerView with
-        ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
-        listeBurgers.add(new Burger(1,"Le Cheesy",null,null,0,0));
-        listeBurgers.add(new Burger(2,"Steaaak",null,null,0,0));
-        listeBurgers.add(new Burger(3,"PinPon",null,null,0,0));
-        listeBurgers.add(new Burger(4,"Cheddar",null,null,0,0));
-        listeBurgers.add(new Burger(5,"*_*",null,null,0,0));
-        listeBurgers.add(new Burger(6,"kawaiidessu",null,null,0,0));
-        listeBurgers.add(new Burger(7,"sisoko biscoto",null,null,0,0));
-        listeBurgers.add(new Burger(8,"Bibou Burger",null,null,0,0));
-        listeBurgers.add(new Burger(9,"Miam Miam",null,null,0,0));
-        listeBurgers.add(new Burger(10,"Bar a coquilette",null,null,0,0));
-        listeBurgers.add(new Burger(11,"Sisi si siiiii",null,null,0,0));
-        listeBurgers.add(new Burger(12,"Kono sekai wane",null,null,0,0));
-
-        // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.listeBurger);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BurgerAdapter(this, listeBurgers);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
-
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -66,10 +42,6 @@ public class MainActivity extends AppCompatActivity implements BurgerAdapter.Ite
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-    }
 
 
 }

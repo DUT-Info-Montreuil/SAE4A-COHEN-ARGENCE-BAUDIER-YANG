@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,8 +40,10 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     // Bind data à TextView pour chaque lignes
     @Override
     public void onBindViewHolder(@NonNull BurgerAdapter.ViewHolder holder, int position) {
-        String nomBurger = mBurgers.get(position).getNomBurger();
-        holder.nomBurgerTextView.setText(nomBurger);
+        Burger burger = mBurgers.get(position);
+        holder.nomBurgerTextView.setText(burger.getNomBurger());
+        holder.descriptionBurger.setText(burger.getDescriptionBurger());
+        holder.prixBurger.setText(Float.toString(burger.getPrixBurger()));
     }
 
     // Nombre total de lignes
@@ -51,10 +54,15 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nomBurgerTextView;
+        ImageView imageBurgerImageView;
+        TextView descriptionBurger;
+        TextView prixBurger;
 
         ViewHolder(View itemView) {
             super(itemView);
             nomBurgerTextView = itemView.findViewById(R.id.nomBurger);
+            descriptionBurger = itemView.findViewById(R.id.descriptionBurger);
+            prixBurger = itemView.findViewById(R.id.prixBurger);
             itemView.setOnClickListener(this);
         }
 
@@ -65,8 +73,8 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     }
 
     // convenience method for getting data at click position
-    public String getItem(int id) {
-        return mBurgers.get(id).getNomBurger();
+    public Burger getBurger(int id) {
+        return mBurgers.get(id);
     }
 
     // allows clicks events to be caught
