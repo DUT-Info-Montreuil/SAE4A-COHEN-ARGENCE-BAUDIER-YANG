@@ -37,6 +37,24 @@ function add_ingredient()
     message(200, "Ingredient ajoute.");
 }
 
+function delete_ingredient()
+{
+    if (!isset($_GET['idIngredient'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=delete&idIngredient=?");
+        exit();
+    }
+
+    $sth = Connexion::$bdd->prepare('select * from Ingredients where idIngredient =  ?');
+    $sth->execute(array($_GET['idIngredient']));
+    if ($sth->rowCount() > 0) {
+        $sth = Connexion::$bdd->prepare('DELETE FROM Ingredients WHERE idIngredient = ?');
+        $sth->execute(array($_GET['idIngredient']));
+        message(200, "Ingredient supprime.");
+    } else {
+        message(404, 'Ingredient pas trouve');
+    }
+}
+
 function ajouter_stock()
 {
     gestion_stock('+');

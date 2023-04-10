@@ -68,7 +68,7 @@ function admin()
                         retirer_stock(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=retirer_stock&idIngredient=?&quantite=?
                         return true;
                     case "delete":
-                        delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
+                        delete_ingredient(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=delete&idIngredient=?
                         return true;
                     default:
                         message(400, "La requete n'est pas valide, verifiez l'url.");

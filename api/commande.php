@@ -5,11 +5,11 @@ header('Content-type: application/json; charset=utf-8');
 function get_commandes()
 {
     global $token;
-    $burgers = Connexion::$bdd->prepare('select idCommande, finit, dateCommande, prix from Commande where idUser = ?');
-    $burgers->execute(array($token['idUser']));
-    if ($burgers->rowCount() > 0) {
+    $commandes = Connexion::$bdd->prepare('select idCommande, finit, dateCommande, prix from Commande where idUser = ?');
+    $commandes->execute(array($token['idUser']));
+    if ($commandes->rowCount() > 0) {
         http_response_code(200);
-        $reponse = $burgers->fetchAll();
+        $reponse = $commandes->fetchAll();
         echo json_encode($reponse);
     } else {
         message(404, 'Erreur dans la base de donnee');
