@@ -20,6 +20,7 @@ try {
                 case 1:
                     if (admin()) $requete_trouve = true;
                 case 2:
+                    if (!$requete_trouve && cuisinier()) $requete_trouve = true;
                 case 3:
                     if (!$requete_trouve) utilisateur();
             }
@@ -76,6 +77,19 @@ function admin()
             } else {
                 message(400, "La requete n'est pas valide, verifiez l'url. Manque la variable action.");
             }
+    }
+}
+
+function cuisinier()
+{
+    include_once('cuisinier/commande.php');
+    switch ($_GET['requete']) {
+        case "commandes_a_faire":
+            get_commandes_a_faire(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
+            return true;
+        case "valider_commande":
+            valider_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/valider_commande&idCommande=?
+            return true;
     }
 }
 
