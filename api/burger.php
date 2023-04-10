@@ -81,7 +81,9 @@ function add_burger()
         $id = Connexion::$bdd->lastInsertId();
         add_ingredients_dans_burger($id);
         http_response_code(200);
-        echo json_encode($burger);
+        $burger = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idBurger = ? and (idUser = ? or idType = 2)');
+        $burger->execute(array($id, $token['idUser']));
+        echo json_encode($burger->fetch());
         Connexion::$bdd->commit();
     } catch (PDOException $e) {
         Connexion::$bdd->rollBack();
