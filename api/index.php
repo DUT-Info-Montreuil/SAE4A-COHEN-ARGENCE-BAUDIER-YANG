@@ -17,9 +17,11 @@ try {
             $requete_trouve = false;
             global $token;
             switch ($token['idType']) {
-                case 1: if(admin()) $requete_trouve = true;
+                case 1:
+                    if (admin()) $requete_trouve = true;
                 case 2:
-                case 3: if (!$requete_trouve) utilisateur();
+                case 3:
+                    if (!$requete_trouve) utilisateur();
             }
         } else {
             switch ($_GET['requete']) {
@@ -62,6 +64,9 @@ function admin()
                     case "ajouter_stock":
                         ajouter_stock(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=ajouter_stock&idIngredient=?&quantite=?
                         return true;
+                    case "retirer_stock":
+                        retirer_stock(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=retirer_stock&idIngredient=?&quantite=?
+                        return true;
                     case "delete":
                         delete_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?
                         return true;
@@ -74,7 +79,7 @@ function admin()
     }
 }
 
-function utilisateur() 
+function utilisateur()
 {
     switch ($_GET['requete']) {
         case "infos_utilisateur":
