@@ -1,9 +1,11 @@
 package com.example.vraiburgir.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,6 +25,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private FragmentHomeBinding binding;
     private BurgerAdapter adapter;
     private RecyclerView recyclerView;
+    private Button personnaliseBurgerButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +43,17 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         this.adapter = new BurgerAdapter(this.requireActivity(), listeBurgers);
         this.adapter.setClickListener(this);
         this.recyclerView.setAdapter(this.adapter);
+
+        //PERSONNALISATION BURGER
+
+        this.personnaliseBurgerButton = root.findViewById(R.id.personnalisationBurgerBoutton);
+        this.personnaliseBurgerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), com.example.vraiburgir.PersonnalizedBurgerActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return root;
     }
