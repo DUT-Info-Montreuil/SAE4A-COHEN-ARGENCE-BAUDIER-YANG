@@ -13,17 +13,33 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
 
         <TextView
             android:id="@+id/nomIngredientChoisi"
-            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp" />
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:text="test" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/drag_handle" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
