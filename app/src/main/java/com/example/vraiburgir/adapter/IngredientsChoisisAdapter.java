@@ -1,7 +1,6 @@
-package com.example.vraiburgir;
+package com.example.vraiburgir.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vraiburgir.ui.home.BurgerAdapter;
+import com.example.vraiburgir.R;
+import com.example.vraiburgir.callback.RecyclerRowMoveCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IngredientsChoisisAdapter extends RecyclerView.Adapter<IngredientsChoisisAdapter.ViewHolder> implements RecyclerRowMoveCallback.RecyclerViewRowTouchHelperContract{
+public class IngredientsChoisisAdapter extends RecyclerView.Adapter<IngredientsChoisisAdapter.ViewHolder> implements RecyclerRowMoveCallback.RecyclerViewRowTouchHelperContract {
 
     private ArrayList<String> nomsIngredients;
     private LayoutInflater mInflater;

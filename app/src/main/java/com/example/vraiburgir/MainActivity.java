@@ -1,11 +1,7 @@
 package com.example.vraiburgir;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
-import com.example.vraiburgir.modele.Burger;
-import com.example.vraiburgir.ui.home.BurgerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +9,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.databinding.ActivityMainBinding;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity  {
 

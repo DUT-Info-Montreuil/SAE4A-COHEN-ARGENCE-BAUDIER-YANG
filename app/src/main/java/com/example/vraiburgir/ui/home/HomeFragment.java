@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.R;
+import com.example.vraiburgir.adapter.BurgerAdapter;
 import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
 

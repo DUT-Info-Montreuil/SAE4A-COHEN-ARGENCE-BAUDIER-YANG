@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.vraiburgir.adapter.IngredientsChoisisAdapter;
+import com.example.vraiburgir.callback.RecyclerRowMoveCallback;
+
 import java.util.ArrayList;
 
 public class PersonnalizedBurgerActivity extends AppCompatActivity {
