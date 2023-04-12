@@ -1,4 +1,4 @@
-package com.example.vraiburgir.adapter;
+package com.example.vraiburgir.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,8 +15,6 @@ import com.example.vraiburgir.modele.Burger;
 
 import java.util.ArrayList;
 
-;
-
 public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder> {
 
     private ArrayList<Burger> mBurgers;
@@ -24,15 +22,13 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    //Données passés à travers le constructeur
-    public BurgerAdapter(Context context, ArrayList<Burger> mBurgers) {
-        this.mBurgers = mBurgers;
+    public BurgerAdapter(Context context, ArrayList<Burger> burgers) {
+        this.mBurgers = burgers;
         this.mBurgersFull = new ArrayList<Burger>();
         this.mBurgersFull.addAll(mBurgers);
         this.mInflater = LayoutInflater.from(context);
     }
 
-    //inflates the row layout from xml when needed
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,7 +36,6 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
-    // Bind data à TextView pour chaque lignes
     @Override
     public void onBindViewHolder(@NonNull BurgerAdapter.ViewHolder holder, int position) {
         Burger burger = mBurgers.get(position);
@@ -49,16 +44,13 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         holder.prixBurger.setText(burger.getPrixBurger() + "€");
     }
 
-    // Nombre total de lignes
     @Override
     public int getItemCount() {
         return mBurgers.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nomBurgerTextView;
-        ImageView imageBurgerImageView;
         TextView descriptionBurger;
         TextView prixBurger;
 
@@ -76,17 +68,13 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         }
     }
 
-    // convenience method for getting data at click position
     public Burger getBurger(int id) {
         return mBurgers.get(id);
     }
-
-    // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
@@ -108,6 +96,4 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         notifyDataSetChanged();
         return texteVide;
     }
-
-
 }

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.R;
-import com.example.vraiburgir.adapter.BurgerAdapter;
+import com.example.vraiburgir.ui.adapter.BurgerAdapter;
 import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
 
@@ -34,14 +34,14 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private SearchView searchViewBurger;
     private LinearLayout layoutCreationBurger;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        //Récupération liste burger
         ArrayList<Burger> listeBurgers = this.listTempBurgers();
 
         // set up the RecyclerView
@@ -51,8 +51,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         this.adapter.setClickListener(this);
         this.recyclerView.setAdapter(this.adapter);
 
-        //PERSONNALISATION BURGER
-
+        //Personnalisation burger
         this.personnaliseBurgerButton = root.findViewById(R.id.personnalisationBurgerBoutton);
         this.personnaliseBurgerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +61,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
             }
         });
 
+        // Recherche
         this.layoutCreationBurger = root.findViewById(R.id.layoutCreationBurger);
         this.searchViewBurger = root.findViewById(R.id.searchViewBurger);
         this.searchViewBurger.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -73,7 +73,6 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
                     layoutCreationBurger.setVisibility(View.GONE);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!adapter.filter(newText))
@@ -102,7 +101,6 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
     private ArrayList<Burger> listTempBurgers() {
         // TEMPORAIRE FAUT UTILISER L'API
-        // data to populate the RecyclerView with
         ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
         listeBurgers.add(new Burger(1,"Le Cheesy","test",null,0,50));
         listeBurgers.add(new Burger(2,"Steaaak","test",null,0,0));
