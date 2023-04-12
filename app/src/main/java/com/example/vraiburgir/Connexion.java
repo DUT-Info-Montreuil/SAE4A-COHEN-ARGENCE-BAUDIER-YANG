@@ -3,12 +3,6 @@ package com.example.vraiburgir;
 import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
@@ -38,7 +32,7 @@ public class Connexion extends AsyncTask {
     }
 
     public void connexion() {
-        String apiUrl = "https://slimy-hounds-walk-194-254-119-253.loca.lt/api/connexion";
+        String apiUrl = "https://mezkay.xyz/sae4a/api/index.php";
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -52,6 +46,7 @@ public class Connexion extends AsyncTask {
 
             HttpPost httpPost = new HttpPost(apiUrl);
             List<NameValuePair> nvps = new ArrayList<>();
+            nvps.add(new BasicNameValuePair("requete", "connexion"));
             nvps.add(new BasicNameValuePair("login", login));
             nvps.add(new BasicNameValuePair("mdp", mdp));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));

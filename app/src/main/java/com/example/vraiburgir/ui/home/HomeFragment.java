@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         this.adapter = new BurgerAdapter(this.requireActivity(), listeBurgers);
         this.adapter.setClickListener(this);
         this.recyclerView.setAdapter(this.adapter);
+//        adapter.changeFragment();
 
         //PERSONNALISATION BURGER
 
@@ -129,6 +131,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // OUI
+                Toast.makeText(getContext(), "Burger supprimé", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {

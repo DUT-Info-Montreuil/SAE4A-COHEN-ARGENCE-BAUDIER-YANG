@@ -23,6 +23,7 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     private ArrayList<Burger> mBurgersFull;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+//    private boolean mHomeOrBasket;
 
     //Données passés à travers le constructeur
     public BurgerAdapter(Context context, ArrayList<Burger> mBurgers) {
@@ -30,19 +31,32 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         this.mBurgersFull = new ArrayList<Burger>();
         this.mBurgersFull.addAll(mBurgers);
         this.mInflater = LayoutInflater.from(context);
+//        this.mHomeOrBasket = false;
     }
+
+//    public void changeFragment(){
+//        if (!mHomeOrBasket) this.mHomeOrBasket = true;
+//        else if (mHomeOrBasket) this.mHomeOrBasket = false;
+//    }
 
     //inflates the row layout from xml when needed
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        View view;
+//        if (mHomeOrBasket) {
+//            view = mInflater.inflate(R.layout.fragment_basket_recyclerview_row, parent, false);
+//        }
+//        else {
+//            view = mInflater.inflate(R.layout.fragment_basket, parent, false);
+//        }
         View view = mInflater.inflate(R.layout.fragment_home_recyclerview_row, parent, false);
         return new ViewHolder(view);
     }
 
     // Bind data à TextView pour chaque lignes
     @Override
-    public void onBindViewHolder(@NonNull BurgerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Burger burger = mBurgers.get(position);
         holder.nomBurgerTextView.setText(burger.getNomBurger());
         holder.descriptionBurger.setText(burger.getDescriptionBurger());
@@ -108,6 +122,5 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         notifyDataSetChanged();
         return texteVide;
     }
-
 
 }
