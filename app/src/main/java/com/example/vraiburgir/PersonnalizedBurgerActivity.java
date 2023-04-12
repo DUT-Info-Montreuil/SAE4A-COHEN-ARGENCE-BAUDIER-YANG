@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.vraiburgir.adapter.IngredientsChoisisAdapter;
 import com.example.vraiburgir.callback.RecyclerRowMoveCallback;
@@ -40,7 +40,7 @@ public class PersonnalizedBurgerActivity extends AppCompatActivity {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
 
-        Button backButton = findViewById(R.id.back_button);
+        ImageButton backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
