@@ -20,12 +20,15 @@ import java.util.ArrayList;
 public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder> {
 
     private ArrayList<Burger> mBurgers;
+    private ArrayList<Burger> mBurgersFull;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     //Données passés à travers le constructeur
     public BurgerAdapter(Context context, ArrayList<Burger> mBurgers) {
         this.mBurgers = mBurgers;
+        this.mBurgersFull = new ArrayList<Burger>();
+        this.mBurgersFull.addAll(mBurgers);
         this.mInflater = LayoutInflater.from(context);
     }
 
@@ -43,7 +46,7 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         Burger burger = mBurgers.get(position);
         holder.nomBurgerTextView.setText(burger.getNomBurger());
         holder.descriptionBurger.setText(burger.getDescriptionBurger());
-        holder.prixBurger.setText(Float.toString(burger.getPrixBurger()));
+        holder.prixBurger.setText(burger.getPrixBurger() + "€");
     }
 
     // Nombre total de lignes
@@ -51,6 +54,7 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     public int getItemCount() {
         return mBurgers.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nomBurgerTextView;
@@ -86,4 +90,24 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+    public boolean filter(String text) {
+        boolean texteVide = false;
+        mBurgers.clear();
+        if(text.equals("")){
+            this.mBurgers.addAll(this.mBurgersFull);
+            texteVide = true;
+        } else{
+            text = text.toLowerCase();
+            for(Burger item: mBurgersFull){
+                if(item.getNomBurger().toLowerCase().contains(text)){
+                    mBurgers.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+        return texteVide;
+    }
+
+
 }

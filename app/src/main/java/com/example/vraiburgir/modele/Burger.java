@@ -1,6 +1,11 @@
 package com.example.vraiburgir.modele;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
+import androidx.recyclerview.widget.SortedListAdapterCallback;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Burger {
 
@@ -30,5 +35,9 @@ public class Burger {
 
     public float getPrixBurger() {
         return prixBurger;
+    }
+
+    public int getIdBurger() {
+        return idBurger;
     }
 }

@@ -1,19 +1,23 @@
 package com.example.vraiburgir.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vraiburgir.MainActivity;
 import com.example.vraiburgir.R;
 import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
@@ -26,6 +30,8 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private BurgerAdapter adapter;
     private RecyclerView recyclerView;
     private Button personnaliseBurgerButton;
+    private SearchView searchViewBurger;
+    private LinearLayout layoutCreationBurger;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +61,28 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
             }
         });
 
+        this.layoutCreationBurger = root.findViewById(R.id.layoutCreationBurger);
+        this.searchViewBurger = root.findViewById(R.id.searchViewBurger);
+        this.searchViewBurger.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (adapter.filter(query))
+                    layoutCreationBurger.setVisibility(View.VISIBLE);
+                else
+                    layoutCreationBurger.setVisibility(View.GONE);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!adapter.filter(newText))
+                    layoutCreationBurger.setVisibility(View.GONE);
+                else
+                    layoutCreationBurger.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
+
         return root;
     }
 
@@ -64,11 +92,18 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         binding = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.searchViewBurger.setQuery("", false);
+        this.searchViewBurger.clearFocus();
+    }
+
     private ArrayList<Burger> listTempBurgers() {
         // TEMPORAIRE FAUT UTILISER L'API
         // data to populate the RecyclerView with
         ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
-        listeBurgers.add(new Burger(1,"Le Cheesy","test",null,0,0));
+        listeBurgers.add(new Burger(1,"Le Cheesy","test",null,0,50));
         listeBurgers.add(new Burger(2,"Steaaak","test",null,0,0));
         listeBurgers.add(new Burger(3,"PinPon","test",null,0,0));
         listeBurgers.add(new Burger(4,"Cheddar","test",null,0,0));
@@ -85,7 +120,24 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
     @Override
     public void onItemClick(View view, int position) {
-        System.out.println("test");
+        CardView cardViewBurger = view.findViewById(R.id.cardViewBurger);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setMessage("Voulez vous ajouter cette article à votre panier ?");
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // OUI
+            }
+        });
+        builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // NON
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

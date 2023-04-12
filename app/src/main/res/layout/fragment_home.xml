@@ -7,7 +7,7 @@
     tools:context=".ui.home.HomeFragment">
 
     <SearchView
-        android:id="@+id/my_searchview"
+        android:id="@+id/searchViewBurger"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -28,39 +28,45 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/burger"
-                android:contentDescription="create your burger"
-                />
-
-            <Button
-                android:id="@+id/personnalisationBurgerBoutton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutCreationBurger"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:backgroundTint="@color/cheddar"
-                android:text="Créer ton burger !" />
+                android:visibility="visible"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="create your burger"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/burger" />
+
+                <Button
+                    android:id="@+id/personnalisationBurgerBoutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:backgroundTint="@color/cheddar"
+                    android:text="Créer ton burger !" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listeBurger"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="32dp"
-                tools:layout_editor_absoluteY="256dp"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false"
+>
+
+            </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 
