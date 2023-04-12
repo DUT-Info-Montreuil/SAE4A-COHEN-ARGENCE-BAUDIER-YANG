@@ -1,4 +1,4 @@
-package com.example.vraiburgir.adapter;
+package com.example.vraiburgir.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -21,7 +21,6 @@ public class IngredientsChoisisAdapter extends RecyclerView.Adapter<IngredientsC
 
     private ArrayList<String> nomsIngredients;
     private LayoutInflater mInflater;
-    private IngredientsChoisisAdapter.ItemClickListener mClickListener;
 
     public IngredientsChoisisAdapter(Context context, ArrayList<String> nomsIngredients) {
         this.nomsIngredients = nomsIngredients;
@@ -84,23 +83,8 @@ public class IngredientsChoisisAdapter extends RecyclerView.Adapter<IngredientsC
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAbsoluteAdapterPosition());
+
         }
-    }
-
-/*    // convenience method for getting data at click position
-    public Burger getBurger(int id) {
-        return mBurgers.get(id);
-    }
-
-    // allows clicks events to be caught
-    public void setClickListener(BurgerAdapter.ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    } */
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 
     public ArrayList<String> getNomsIngredients() {

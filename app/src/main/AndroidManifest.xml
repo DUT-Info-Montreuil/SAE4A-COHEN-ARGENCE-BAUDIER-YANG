@@ -12,6 +12,11 @@
         android:theme="@style/Theme.VraiBurgir"
         tools:targetApi="31">
         <activity
+            android:name=".testActivity"
+            android:exported="false"
+            android:label="@string/title_activity_test"
+            android:theme="@style/Theme.VraiBurgir.NoActionBar" />
+        <activity
             android:name=".PersonnalizedBurgerActivity"
             android:exported="false" />
         <activity

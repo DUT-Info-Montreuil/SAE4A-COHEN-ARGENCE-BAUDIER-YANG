@@ -1,15 +1,21 @@
 package com.example.vraiburgir;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
-import com.example.vraiburgir.adapter.IngredientsChoisisAdapter;
+import com.example.vraiburgir.ui.adapter.IngredientsChoisisAdapter;
 import com.example.vraiburgir.callback.RecyclerRowMoveCallback;
 
 import java.util.ArrayList;
@@ -23,15 +29,14 @@ public class PersonnalizedBurgerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personnalized_burger);
 
-        // data to populate the RecyclerView with
+        //Donnée en attendant API
         ArrayList<String> animalNames = new ArrayList<>();
-        animalNames.add("Horse");
-        animalNames.add("Cow");
-        animalNames.add("Camel");
-        animalNames.add("Sheep");
-        animalNames.add("Goat");
+        animalNames.add("Pain Brioché");
+        animalNames.add("Oignon");
+        animalNames.add("Cheddar");
+        animalNames.add("Viande");
+        animalNames.add("Pain Brioché");
 
-        // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.listeIngredientsChoisis);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.adapter = new IngredientsChoisisAdapter(this, animalNames);
@@ -44,13 +49,12 @@ public class PersonnalizedBurgerActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                finish(); // Close the current activity
+                finish();
             }
         });
 
-
-        //adapter.setClickListener(this);
         recyclerView.setAdapter(this.adapter);
+
+
     }
 }
