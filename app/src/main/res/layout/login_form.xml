@@ -4,6 +4,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/textViewBonjour"
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
@@ -22,6 +28,7 @@
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/teal_700"
         android:text="Se connecter" />
 
     <Button
@@ -29,5 +36,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Je n'ai pas de compte" />
+
+    <Button
+        android:id="@+id/buttonModif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="modifier mes infos" />
 
 </LinearLayout>
