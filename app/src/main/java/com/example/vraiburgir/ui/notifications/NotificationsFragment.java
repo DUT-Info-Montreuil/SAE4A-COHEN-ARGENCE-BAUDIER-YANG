@@ -16,11 +16,25 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.vraiburgir.Connexion;
 import com.example.vraiburgir.MainActivity;
 import com.example.vraiburgir.ModifActivity;
 import com.example.vraiburgir.R;
 import com.example.vraiburgir.SignupActivity;
 import com.example.vraiburgir.databinding.FragmentNotificationsBinding;
+
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.net.URIBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.IOException;
 
 public class NotificationsFragment extends Fragment {
 
@@ -82,6 +96,48 @@ public class NotificationsFragment extends Fragment {
 
             // TODO
             // Effectue l'action de connexion (par exemple, en utilisant une API)
+            Connexion connexion = new Connexion("tet", "Aa123456");
+            connexion.execute();
+            System.out.println("token " + connexion.getToken());
+//            String apiUrl = "http://127.0.0.1/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers";
+//
+//            CloseableHttpClient httpClient = HttpClients.createDefault();
+//            Connexion connexion = new Connexion("tet", "Aa123456");
+//            try {
+//                URIBuilder builder = new URIBuilder(apiUrl);
+//                HttpGet request = new HttpGet(builder.build());
+//                request.addHeader("Authorization", "Bearer " + connexion.getToken());
+//                CloseableHttpResponse response = httpClient.execute(request);
+//
+//                try {
+//                    HttpEntity entity = response.getEntity();/*
+//                    String responseString = EntityUtils.toString(entity, "UTF-8");
+//                    System.out.println(responseString);*/
+//                    if (entity != null) {
+//                        String responseBody = EntityUtils.toString(entity);
+//                        JSONTokener tokener = new JSONTokener(responseBody);
+//                        if (tokener.nextClean() == '[') {
+//                            JSONArray json = new JSONArray(responseBody);
+//                            System.out.println(json.toString());
+//                        } else {
+//                            JSONObject json = new JSONObject(responseBody);
+//                            System.out.println(json.toString());
+//                        }
+//                    }
+//                } finally {
+//                    response.close();
+//                }
+//            } catch (Exception e) {
+//                System.out.println("ok");
+//                e.printStackTrace();
+//            } finally {
+//                System.out.println("ok2");
+//                try {
+//                    httpClient.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
             // Remplacer le text dans le toast
             connected = true;
             verifieConnexion();
