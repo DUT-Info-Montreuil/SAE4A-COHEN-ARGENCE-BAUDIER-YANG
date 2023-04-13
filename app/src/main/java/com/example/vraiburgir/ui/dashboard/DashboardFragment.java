@@ -97,9 +97,9 @@ public class DashboardFragment extends Fragment implements BurgerPanierAdapter.I
 
                 String idBugers = "";
                 for (int i = 0; i < commande.getContenuCommande().size() - 1; i++) {
-                    idBugers += commande.getContenuCommande().get(i) + ",";
+                    idBugers += commande.getContenuCommande().get(i).getIdBurger() + ",";
                 }
-                idBugers += commande.getContenuCommande().get(commande.getContenuCommande().size() - 1);
+                idBugers += commande.getContenuCommande().get(commande.getContenuCommande().size() - 1).getIdBurger();
                 variables.add(new BasicNameValuePair("idBurgers", idBugers));
                 System.out.println(idBugers);
                 RequeteApi requete = new RequeteApi(MainActivity.connexion, variables);
