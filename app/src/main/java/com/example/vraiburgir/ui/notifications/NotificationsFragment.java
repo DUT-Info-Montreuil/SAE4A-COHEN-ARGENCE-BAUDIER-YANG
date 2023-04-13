@@ -53,6 +53,7 @@ public class NotificationsFragment extends Fragment {
     private Button buttonModif;
     private Button buttonLogin;
     private TextView textViewBonjour;
+    private Connexion connexion;
 
     private FragmentNotificationsBinding binding;
 
@@ -102,7 +103,8 @@ public class NotificationsFragment extends Fragment {
                 return;
             }
 
-            Connexion connexion = new Connexion(email, password);
+            // CONNEXION
+            this.connexion = new Connexion(email, password);
             System.out.println("token " + connexion.getToken());
             if (connexion.connected()) {
                 List<NameValuePair> variables = new ArrayList<>();
@@ -118,25 +120,11 @@ public class NotificationsFragment extends Fragment {
                         connected = true;
                         verifieConnexion();
                         view.invalidate();
-
                         // ...
                         Toast.makeText(getContext(), "Ravie de vous revoir " + reponse.get("login"), Toast.LENGTH_SHORT).show();
                         //
                     }
-//                    HashMap<String, String> variables2 = new HashMap<>();
-//                    variables2.put("requete", "burgers");
-//                    RequeteApi requete = new RequeteApi(connexion, variables2);
-//                    requete.execute();
-//                    JSONObject reponse2 = (JSONObject) requete.get();
-//                    if (reponse2.has("message")) {
-//                        System.out.println(reponse2.get("message"));
-//                    } else if (reponse2.has("array")) {
-//                        JSONArray jsonArray = reponse2.getJSONArray("array");
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                            System.out.println(jsonObject);
-//                        }
-//                    }
+
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
@@ -144,6 +132,7 @@ public class NotificationsFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+
             }
         });
 

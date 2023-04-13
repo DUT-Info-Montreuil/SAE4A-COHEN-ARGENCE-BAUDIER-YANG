@@ -23,15 +23,14 @@ public class PersonnalizedBurgerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personnalized_burger);
 
-        // data to populate the RecyclerView with
+        //Donnée en attendant API
         ArrayList<String> animalNames = new ArrayList<>();
-        animalNames.add("Horse");
-        animalNames.add("Cow");
-        animalNames.add("Camel");
-        animalNames.add("Sheep");
-        animalNames.add("Goat");
+        animalNames.add("Pain Brioché");
+        animalNames.add("Oignon");
+        animalNames.add("Cheddar");
+        animalNames.add("Viande");
+        animalNames.add("Pain Brioché");
 
-        // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.listeIngredientsChoisis);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.adapter = new IngredientsChoisisAdapter(this, animalNames);
@@ -44,13 +43,12 @@ public class PersonnalizedBurgerActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                finish(); // Close the current activity
+                finish();
             }
         });
 
-
-        //adapter.setClickListener(this);
         recyclerView.setAdapter(this.adapter);
+
+
     }
 }

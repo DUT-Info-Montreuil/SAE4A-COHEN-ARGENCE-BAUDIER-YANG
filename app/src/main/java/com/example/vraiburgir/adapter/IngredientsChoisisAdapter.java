@@ -1,6 +1,7 @@
 package com.example.vraiburgir.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ public class IngredientsChoisisAdapter extends RecyclerView.Adapter<IngredientsC
 
     private ArrayList<String> nomsIngredients;
     private LayoutInflater mInflater;
-    private IngredientsChoisisAdapter.ItemClickListener mClickListener;
 
     public IngredientsChoisisAdapter(Context context, ArrayList<String> nomsIngredients) {
         this.nomsIngredients = nomsIngredients;
@@ -62,12 +62,12 @@ public class IngredientsChoisisAdapter extends RecyclerView.Adapter<IngredientsC
 
     @Override
     public void onRowSelected(ViewHolder myViewHolder) {
-        //ViewHolder.ingredientChoisiCardView.setCardBackgroundColor(Color.GRAY);
+        myViewHolder.ingredientChoisiCardView.setCardBackgroundColor(Color.GRAY);
     }
 
     @Override
     public void onRowClear(ViewHolder myViewHolder) {
-        //ViewHolder.ingredientChoisiCardView.setCardBackgroundColor(Color.parseColor("#12dddd"));
+        myViewHolder.ingredientChoisiCardView.setCardBackgroundColor(Color.parseColor("#f6b24c"));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,23 +83,8 @@ public class IngredientsChoisisAdapter extends RecyclerView.Adapter<IngredientsC
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAbsoluteAdapterPosition());
+
         }
-    }
-
-/*    // convenience method for getting data at click position
-    public Burger getBurger(int id) {
-        return mBurgers.get(id);
-    }
-
-    // allows clicks events to be caught
-    public void setClickListener(BurgerAdapter.ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    } */
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 
     public ArrayList<String> getNomsIngredients() {

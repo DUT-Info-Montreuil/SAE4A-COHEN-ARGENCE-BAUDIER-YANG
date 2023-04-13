@@ -9,7 +9,6 @@ import com.example.vraiburgir.adapter.IngredientsChoisisAdapter;
 
 public class RecyclerRowMoveCallback extends ItemTouchHelper.Callback {
 
-
     private RecyclerViewRowTouchHelperContract touchHelperContract;
     private IngredientsChoisisAdapter adapter;
 
