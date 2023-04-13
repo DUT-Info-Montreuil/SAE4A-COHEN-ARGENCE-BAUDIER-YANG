@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
     private ArrayList<Burger> listTempBurgers() throws ExecutionException, InterruptedException, JSONException {
         ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
-        this.tempConnexion = new Connexion("admin","Aa123456");
+        //this.tempConnexion = new Connexion("admin","Aa123456");
         List<NameValuePair> variables = new ArrayList<>();
         variables.add(new BasicNameValuePair("requete", "burgers"));
         RequeteApi requeteApi = new RequeteApi(this.tempConnexion, variables);

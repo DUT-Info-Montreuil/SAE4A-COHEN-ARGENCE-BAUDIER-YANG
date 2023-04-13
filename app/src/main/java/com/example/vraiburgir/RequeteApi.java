@@ -32,6 +32,11 @@ public class RequeteApi extends AsyncTask {
         this.variables = variables;
     }
 
+    public RequeteApi(List<NameValuePair> variables) {
+        this.variables = variables;
+    }
+
+
     public JSONObject requete() {
         JSONObject json = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -45,7 +50,8 @@ public class RequeteApi extends AsyncTask {
             */
             HttpPost httpPost = new HttpPost(apiUrl);
             httpPost.setEntity(new UrlEncodedFormEntity(variables));
-            httpPost.addHeader("Authorization", "Bearer " + connexion.getToken());
+            if (connexion != null)
+                httpPost.addHeader("Authorization", "Bearer " + connexion.getToken());
             CloseableHttpResponse response = httpClient.execute(httpPost);
             try {
                 HttpEntity entity = response.getEntity();/*
