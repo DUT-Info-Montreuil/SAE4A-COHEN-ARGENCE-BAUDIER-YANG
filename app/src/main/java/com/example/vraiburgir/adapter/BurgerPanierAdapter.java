@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.R;
+import com.example.vraiburgir.SingletonData;
 import com.example.vraiburgir.modele.Burger;
 
 import java.text.BreakIterator;
@@ -81,6 +82,7 @@ public class BurgerPanierAdapter extends RecyclerView.Adapter<BurgerPanierAdapte
     }
     public void supprimerBurger(int index){
         this.mBurgers.remove(index);
+        SingletonData.getInstance().suppBurger(index);
         notifyDataSetChanged();
     }
 }

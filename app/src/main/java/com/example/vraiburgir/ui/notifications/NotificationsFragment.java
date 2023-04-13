@@ -99,45 +99,7 @@ public class NotificationsFragment extends Fragment {
             Connexion connexion = new Connexion("tet", "Aa123456");
             connexion.execute();
             System.out.println("token " + connexion.getToken());
-//            String apiUrl = "http://127.0.0.1/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers";
-//
-//            CloseableHttpClient httpClient = HttpClients.createDefault();
-//            Connexion connexion = new Connexion("tet", "Aa123456");
-//            try {
-//                URIBuilder builder = new URIBuilder(apiUrl);
-//                HttpGet request = new HttpGet(builder.build());
-//                request.addHeader("Authorization", "Bearer " + connexion.getToken());
-//                CloseableHttpResponse response = httpClient.execute(request);
-//
-//                try {
-//                    HttpEntity entity = response.getEntity();/*
-//                    String responseString = EntityUtils.toString(entity, "UTF-8");
-//                    System.out.println(responseString);*/
-//                    if (entity != null) {
-//                        String responseBody = EntityUtils.toString(entity);
-//                        JSONTokener tokener = new JSONTokener(responseBody);
-//                        if (tokener.nextClean() == '[') {
-//                            JSONArray json = new JSONArray(responseBody);
-//                            System.out.println(json.toString());
-//                        } else {
-//                            JSONObject json = new JSONObject(responseBody);
-//                            System.out.println(json.toString());
-//                        }
-//                    }
-//                } finally {
-//                    response.close();
-//                }
-//            } catch (Exception e) {
-//                System.out.println("ok");
-//                e.printStackTrace();
-//            } finally {
-//                System.out.println("ok2");
-//                try {
-//                    httpClient.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+
             // Remplacer le text dans le toast
             connected = true;
             verifieConnexion();

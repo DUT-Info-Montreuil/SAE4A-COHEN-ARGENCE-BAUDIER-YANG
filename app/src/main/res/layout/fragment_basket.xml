@@ -10,6 +10,33 @@
         android:layout_marginTop="10dp"
         android:layout_above="@+id/linearLayoutTotalPrice"/>
 
+    <TextView
+        android:id="@+id/panierVideTextView"
+        android:text="Votre panier est vide"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/commandeEnCoursTextView"
+        android:text="Votre commande est en cours de préparation"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/buttonRecomander"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/commandeEnCoursTextView"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/cheddar"
+        android:text="Annuler la commande" />
+
     <LinearLayout
         android:id="@+id/linearLayoutTotalPrice"
         android:layout_width="match_parent"
@@ -40,9 +67,10 @@
                 android:layout_weight="1"/>
 
             <Button
-                android:id="@+id/buttonCheckout"
+                android:id="@+id/buttonCommander"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/cheddar"
                 android:text="Commander"/>
 
         </LinearLayout>
