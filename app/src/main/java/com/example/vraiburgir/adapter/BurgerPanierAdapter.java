@@ -11,35 +11,32 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.R;
+import com.example.vraiburgir.SingletonData;
 import com.example.vraiburgir.modele.Burger;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
-;
-
-public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder> {
+public class BurgerPanierAdapter extends RecyclerView.Adapter<BurgerPanierAdapter.ViewHolderPanier>{
 
     private ArrayList<Burger> mBurgers;
-    private ArrayList<Burger> mBurgersFull;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    public BurgerAdapter(Context context, ArrayList<Burger> burgers) {
-        this.mBurgers = burgers;
-        this.mBurgersFull = new ArrayList<Burger>();
-        this.mBurgersFull.addAll(mBurgers);
+    public BurgerPanierAdapter(Context context, ArrayList<Burger> mBurgers) {
+        this.mBurgers = mBurgers;
         this.mInflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.fragment_home_recyclerview_row, parent, false);
-        return new ViewHolder(view);
+    public ViewHolderPanier onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.fragment_basket_recyclerview_row, parent, false);
+        return new ViewHolderPanier(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolderPanier holder, int position) {
         Burger burger = mBurgers.get(position);
         holder.nomBurgerTextView.setText(burger.getNomBurger());
         holder.descriptionBurger.setText(burger.getDescriptionBurger());
@@ -51,12 +48,14 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         return mBurgers.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolderPanier extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         TextView nomBurgerTextView;
+        ImageView imageBurgerImageView;
         TextView descriptionBurger;
         TextView prixBurger;
 
-        ViewHolder(View itemView) {
+        public ViewHolderPanier(@NonNull View itemView) {
             super(itemView);
             nomBurgerTextView = itemView.findViewById(R.id.nomBurger);
             descriptionBurger = itemView.findViewById(R.id.descriptionBurger);
@@ -73,6 +72,7 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     public Burger getBurger(int id) {
         return mBurgers.get(id);
     }
+
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
@@ -80,24 +80,9 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-
-    public boolean filter(String text) {
-        boolean texteVide = false;
-        mBurgers.clear();
-        if(text.equals("")){
-            this.mBurgers.addAll(this.mBurgersFull);
-            texteVide = true;
-        } else{
-            text = text.toLowerCase();
-            for(Burger item: mBurgersFull){
-                if(item.getNomBurger().toLowerCase().contains(text)){
-                    mBurgers.add(item);
-                }
-            }
-        }
+    public void supprimerBurger(int index){
+        this.mBurgers.remove(index);
+        SingletonData.getInstance().suppBurger(index);
         notifyDataSetChanged();
-        return texteVide;
     }
-
-
 }
