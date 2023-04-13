@@ -25,6 +25,14 @@ public class Burger {
         this.prixBurger = prixBurger;
     }
 
+    public Burger(String nomBurger, String descriptionBurger, double prixBurger) {
+        this.nomBurger = nomBurger;
+        this.descriptionBurger = descriptionBurger;
+//        this.listeIngredient = listeIngredient;
+//        this.idUser = idUser;
+        this.prixBurger = prixBurger;
+    }
+
     public String getNomBurger() {
         return nomBurger;
     }
@@ -37,4 +45,7 @@ public class Burger {
         return prixBurger;
     }
 
+    public int getIdBurger() {
+        return idBurger;
+    }
 }

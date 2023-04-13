@@ -11,11 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.R;
+import com.example.vraiburgir.RequeteApi;
 import com.example.vraiburgir.modele.Burger;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder> {
 
@@ -99,5 +102,8 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.ViewHolder
         return texteVide;
     }
 
-
+    public void ajouterBurger(Burger burger) {
+        this.mBurgers.add(burger);
+        this.mBurgersFull.add(burger);
+    }
 }

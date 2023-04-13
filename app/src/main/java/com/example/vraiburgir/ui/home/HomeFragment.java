@@ -1,15 +1,22 @@
 package com.example.vraiburgir.ui.home;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -49,6 +56,8 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private Button personnaliseBurgerButton;
     private SearchView searchViewBurger;
     private LinearLayout layoutCreationBurger;
+    public static Connexion tempConnexion;
+    private boolean interrupteurSuppresion;
     private Connexion tempConnexion;
     private Commande commande = new Commande(1, new ArrayList<>());
 
@@ -62,7 +71,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         //Récupération liste burger
         ArrayList<Burger> listeBurgers = null;
         try {
-            listeBurgers = this.listTempBurgers();
+            listeBurgers = this.recupererListeBurgerAPI();
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
@@ -116,6 +125,35 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
             }
         });
 
+        //ADMIN
+        this.interrupteurSuppresion=false;
+        if (this.tempConnexion.getTypeUtilisateur() == 1) {
+            LinearLayout adminLayout = root.findViewById(R.id.layoutAdmin);
+            adminLayout.setVisibility(View.VISIBLE);
+
+            Button buttonAjouter = root.findViewById(R.id.ajouterBurger);
+            buttonAjouter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), com.example.vraiburgir.AjouterBurgerActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            CheckBox checkboxSupprimer = root.findViewById(R.id.supprimerBurger);
+            checkboxSupprimer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        HomeFragment.this.interrupteurSuppresion=true;
+                    } else {
+                        HomeFragment.this.interrupteurSuppresion=false;
+                    }
+                }
+            });
+
+        }
+
         return root;
     }
 
@@ -132,7 +170,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         this.searchViewBurger.clearFocus();
     }
 
-    private ArrayList<Burger> listTempBurgers() throws ExecutionException, InterruptedException, JSONException {
+    private ArrayList<Burger> recupererListeBurgerAPI() throws ExecutionException, InterruptedException, JSONException {
         ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
         //this.tempConnexion = new Connexion("admin","Aa123456");
         List<NameValuePair> variables = new ArrayList<>();
@@ -159,17 +197,62 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         CardView cardViewBurger = view.findViewById(R.id.cardViewBurger);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-        builder.setMessage("Voulez vous ajouter cette article à votre panier ?");
+        if (!this.interrupteurSuppresion) {
+            builder.setMessage("Voulez vous ajouter cette article à votre panier ?");
+            builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+        } else {
+            builder.setMessage("Voulez vous supprimer cette article ?");
+            builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    HashMap<String, String> variables = new HashMap<>();
+                    variables.put("requete", "delete_burger");
+                    variables.put("idBurger", Integer.toString(HomeFragment.this.adapter.getBurger(position).getIdBurger()));
+                    RequeteApi requete = new RequeteApi(HomeFragment.this.tempConnexion, variables);
+                    requete.execute();
+                    JSONObject reponse2 = null;
 
-        builder.setPositiveButton("Oui", (dialog, which) -> {
-            commande.addBurger(adapter.getBurger(position));
-            Toast.makeText(getContext(), "Burger ajouté", Toast.LENGTH_SHORT).show();
-        });
+                    try { reponse2 = (JSONObject) requete.get();
+                    } catch (ExecutionException e) {throw new RuntimeException(e);
+                    } catch (InterruptedException e) {throw new RuntimeException(e);}
 
-        builder.setNegativeButton("Non", (dialog, which) -> {
-            // NON
-        });
+                    try {
+                        System.out.println(reponse2.get("message"));
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    try {
+                        if (reponse2.get("message").equals("Burger supprime.")) {
+                            Toast.makeText(getContext(), "Burger supprimé", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {throw new RuntimeException(e);}
+
+                }
+            });
+            builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // NON
+                }
+            });
+        }
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public BurgerAdapter getAdapter() {
+        return adapter;
     }
 }

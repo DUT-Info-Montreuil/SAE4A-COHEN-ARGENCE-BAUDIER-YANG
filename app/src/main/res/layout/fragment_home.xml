@@ -1,4 +1,106 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".ui.home.HomeFragment">-->
+
+<!--    <SearchView-->
+<!--        android:id="@+id/searchViewBurger"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:iconifiedByDefault="false"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:background="@color/cheddar">-->
+<!--    </SearchView>-->
+
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="100dp">-->
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/layoutCreationBurger"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:visibility="visible"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/imageButton"-->
+<!--                    android:layout_width="100dp"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:contentDescription="create your burger"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:src="@drawable/burger" />-->
+
+<!--                <Button-->
+<!--                    android:id="@+id/personnalisationBurgerBoutton"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_horizontal|bottom"-->
+<!--                    android:backgroundTint="@color/cheddar"-->
+<!--                    android:text="Créer ton burger !" />-->
+<!--            </LinearLayout>-->
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/listeBurger"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:nestedScrollingEnabled="false"-->
+<!--&gt;-->
+
+<!--            </androidx.recyclerview.widget.RecyclerView>-->
+
+<!--        </LinearLayout>-->
+
+
+<!--    </androidx.core.widget.NestedScrollView>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:visibility="visible"-->
+<!--        android:id="@+id/layoutAdmin"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/ajouterBurger"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Ajouter"-->
+<!--            android:backgroundTint="@color/cheddar"-->
+<!--            android:layout_margin="5dp"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/supprimerBurger"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Supprimer"-->
+<!--            android:backgroundTint="@color/cheddar"-->
+<!--            android:layout_margin="5dp"/>-->
+<!--    </LinearLayout>-->
+
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,22 +110,26 @@
 
     <SearchView
         android:id="@+id/searchViewBurger"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@color/cheddar"
         android:iconifiedByDefault="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/cheddar">
-    </SearchView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></SearchView>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp">
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintBottom_toTopOf="@id/layoutAdmin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchViewBurger">
 
 
         <LinearLayout
@@ -35,8 +141,8 @@
                 android:id="@+id/layoutCreationBurger"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -60,8 +166,7 @@
                 android:id="@+id/listeBurger"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
->
+                android:nestedScrollingEnabled="false">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -70,6 +175,36 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/layoutAdmin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView">
+
+        <Button
+            android:id="@+id/ajouterBurger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/cheddar"
+            android:text="Ajouter" />
+
+        <CheckBox
+            android:id="@+id/supprimerBurger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/cheddar"
+            android:text="Supprimer" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
