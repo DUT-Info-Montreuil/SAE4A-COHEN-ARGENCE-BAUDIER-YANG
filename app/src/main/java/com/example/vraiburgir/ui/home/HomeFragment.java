@@ -1,22 +1,16 @@
 package com.example.vraiburgir.ui.home;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -27,7 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vraiburgir.Connexion;
+import com.example.vraiburgir.MainActivity;
 import com.example.vraiburgir.R;
 import com.example.vraiburgir.SingletonData;
 import com.example.vraiburgir.adapter.BurgerAdapter;
@@ -35,7 +29,6 @@ import com.example.vraiburgir.RequeteApi;
 import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
 import com.example.vraiburgir.modele.Commande;
-import com.example.vraiburgir.ui.notifications.NotificationsFragment;
 
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
@@ -44,7 +37,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -56,13 +48,11 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private Button personnaliseBurgerButton;
     private SearchView searchViewBurger;
     private LinearLayout layoutCreationBurger;
-    public static Connexion tempConnexion;
     private boolean interrupteurSuppresion;
 
     private Commande commande = new Commande(1, new ArrayList<>());
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        tempConnexion = new Connexion("admin", "Aa123456");
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -128,7 +118,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
         //ADMIN
         this.interrupteurSuppresion = false;
-        if (this.tempConnexion.getTypeUtilisateur() == 1) {
+        if (MainActivity.connexion.getTypeUtilisateur() == 1) {
             LinearLayout adminLayout = root.findViewById(R.id.layoutAdmin);
             adminLayout.setVisibility(View.VISIBLE);
 
@@ -202,6 +192,8 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
             builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    commande.addBurger(adapter.getBurger(position));
+                    Toast.makeText(getContext(), "Burger ajouté", Toast.LENGTH_SHORT).show();
                 }
             });
             builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
@@ -217,7 +209,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
                     List<NameValuePair> variables = new ArrayList<>();
                     variables.add(new BasicNameValuePair("requete", "delete_burger"));
                     variables.add(new BasicNameValuePair("idBurger", Integer.toString(HomeFragment.this.adapter.getBurger(position).getIdBurger())));
-                    RequeteApi requete = new RequeteApi(HomeFragment.this.tempConnexion, variables);
+                    RequeteApi requete = new RequeteApi(MainActivity.connexion, variables);
                     requete.execute();
                     JSONObject reponse2 = null;
 

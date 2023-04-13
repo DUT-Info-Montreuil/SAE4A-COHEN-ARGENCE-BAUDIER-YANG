@@ -1,7 +1,6 @@
 package com.example.vraiburgir.ui.dashboard;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,21 +14,25 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vraiburgir.MainActivity;
 import com.example.vraiburgir.R;
+import com.example.vraiburgir.RequeteApi;
 import com.example.vraiburgir.SingletonData;
-import com.example.vraiburgir.adapter.BurgerAdapter;
 import com.example.vraiburgir.adapter.BurgerPanierAdapter;
-import com.example.vraiburgir.databinding.FragmentDashboardBinding;
 import com.example.vraiburgir.modele.Burger;
 import com.example.vraiburgir.modele.Commande;
-import com.example.vraiburgir.modele.Ingredient;
-import com.example.vraiburgir.ui.home.HomeFragment;
+
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class DashboardFragment extends Fragment implements BurgerPanierAdapter.ItemClickListener{
 
@@ -87,6 +90,35 @@ public class DashboardFragment extends Fragment implements BurgerPanierAdapter.I
             } else {
                 passerCommande();
                 SingletonData.getInstance().getCommande().setCommandeEnCours(true);
+                Commande commande = SingletonData.getInstance().getCommande();
+                List<NameValuePair> variables = new ArrayList<>();
+                variables.add(new BasicNameValuePair("requete", "commande"));
+                variables.add(new BasicNameValuePair("action", "add"));
+
+                String idBugers = "";
+                for (int i = 0; i < commande.getContenuCommande().size() - 1; i++) {
+                    idBugers += commande.getContenuCommande().get(i) + ",";
+                }
+                idBugers += commande.getContenuCommande().get(commande.getContenuCommande().size() - 1);
+                variables.add(new BasicNameValuePair("idBurgers", idBugers));
+                System.out.println(idBugers);
+                RequeteApi requete = new RequeteApi(MainActivity.connexion, variables);
+                requete.execute();
+                JSONObject reponse2 = null;
+
+                try {
+                    reponse2 = (JSONObject) requete.get();
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                try {
+                    System.out.println(reponse2.get("message"));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -126,7 +158,6 @@ public class DashboardFragment extends Fragment implements BurgerPanierAdapter.I
         }
     }
 
-    //TODO remplacer par les methodes de l'api
     private void initListBurger(ArrayList<Burger> burgerList){
         ArrayList<Burger> listeCommande = SingletonData.getInstance().getCommande().getContenuCommande();
         for (Burger b : listeCommande){

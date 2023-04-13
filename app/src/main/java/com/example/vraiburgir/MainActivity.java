@@ -16,9 +16,12 @@ public class MainActivity extends AppCompatActivity  {
 
     private ActivityMainBinding binding;
 
+    public static Connexion connexion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        connexion = new Connexion();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

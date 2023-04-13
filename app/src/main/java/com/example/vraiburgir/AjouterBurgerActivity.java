@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.vraiburgir.modele.Burger;
-import com.example.vraiburgir.ui.home.HomeFragment;
 
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
@@ -18,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -77,7 +75,7 @@ public class AjouterBurgerActivity extends AppCompatActivity {
         variablesAEnvoyer.add(new BasicNameValuePair("description", burger.getDescriptionBurger()));
         variablesAEnvoyer.add(new BasicNameValuePair("ingredients","3,3,4"));
         variablesAEnvoyer.add(new BasicNameValuePair("prix",Double.toString(burger.getPrixBurger())));
-        RequeteApi requete = new RequeteApi(HomeFragment.tempConnexion, variablesAEnvoyer);
+        RequeteApi requete = new RequeteApi(MainActivity.connexion, variablesAEnvoyer);
         requete.execute();
         //QUAND API MODIFIE RENVERRA UN MESSAGE VALIDE
         JSONObject reponse = (JSONObject) requete.get();

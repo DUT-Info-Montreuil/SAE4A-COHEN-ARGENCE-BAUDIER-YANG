@@ -9,10 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ModifActivity extends AppCompatActivity {
@@ -51,9 +54,11 @@ public class ModifActivity extends AppCompatActivity {
         this.connexion = new Connexion("tet", "Aa123456");
         System.out.println("token " + connexion.getToken());
         if (connexion.connected()) {
-            HashMap<String, String> variables = new HashMap<>();
-            variables.put("requete", "infos_utilisateur"); // inscription
-            RequeteApi requeteApi = new RequeteApi(connexion, variables);
+            List<NameValuePair> variables = new ArrayList<>();
+            variables.add(new BasicNameValuePair("requete", "infos_utilisateur"));
+            RequeteApi requeteApi = new RequeteApi(MainActivity.connexion, variables);
+
+
             requeteApi.execute();
             try {
                 JSONObject reponse = (JSONObject) requeteApi.get();

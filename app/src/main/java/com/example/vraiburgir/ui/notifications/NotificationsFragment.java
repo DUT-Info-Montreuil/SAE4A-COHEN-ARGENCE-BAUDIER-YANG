@@ -53,7 +53,6 @@ public class NotificationsFragment extends Fragment {
     private Button buttonModif;
     private Button buttonLogin;
     private TextView textViewBonjour;
-    private Connexion connexion;
 
     private FragmentNotificationsBinding binding;
 
@@ -91,12 +90,12 @@ public class NotificationsFragment extends Fragment {
             }
 
             // CONNEXION
-            this.connexion = new Connexion(email, password);
-            System.out.println("token " + connexion.getToken());
-            if (connexion.connected()) {
+            MainActivity.connexion = new Connexion(email, password);
+            System.out.println("token " + MainActivity.connexion.getToken());
+            if (MainActivity.connexion.connected()) {
                 List<NameValuePair> variables = new ArrayList<>();
                 variables.add(new BasicNameValuePair("requete", "infos_utilisateur"));
-                RequeteApi requeteApi = new RequeteApi(connexion, variables);
+                RequeteApi requeteApi = new RequeteApi(MainActivity.connexion, variables);
                 requeteApi.execute();
                 try {
                     JSONObject reponse = (JSONObject) requeteApi.get();

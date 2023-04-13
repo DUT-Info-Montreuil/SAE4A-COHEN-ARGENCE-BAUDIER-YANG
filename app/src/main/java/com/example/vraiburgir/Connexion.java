@@ -34,7 +34,7 @@ public class Connexion extends AsyncTask {
     private String token;
     private String login;
     private String mdp;
-    private int typeUtilisateur; //1:admin, 2:cuisine, 3:user
+    private int typeUtilisateur; //-1:non connecte, 1:admin, 2:cuisine, 3:user
 
     public Connexion(String login, String mdp) {
         this.login = login;
@@ -49,6 +49,10 @@ public class Connexion extends AsyncTask {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Connexion() {
+        typeUtilisateur = -1;
     }
 
     public void connexion() {
@@ -108,7 +112,8 @@ public class Connexion extends AsyncTask {
     protected Object doInBackground(Object[] objects) {
         connexion();
         try {
-            this.typeUtilisateur = this.typeUser();
+            if (connected())
+                this.typeUtilisateur = this.typeUser();
             System.out.println("-------------------------------------------------------------------------------------------> typeUser :" + typeUtilisateur);
         } catch (JSONException e) {
             throw new RuntimeException(e);
