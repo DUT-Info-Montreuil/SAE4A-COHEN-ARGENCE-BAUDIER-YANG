@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 public class RequeteApi extends AsyncTask {
 
-    private static final String apiUrl = "http://10.0.2.2/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/index.php";
+    private static final String apiUrl = "https://steven.mezkay.ovh/api/index.php";
     private Connexion connexion;
     private List<NameValuePair> variables;
 

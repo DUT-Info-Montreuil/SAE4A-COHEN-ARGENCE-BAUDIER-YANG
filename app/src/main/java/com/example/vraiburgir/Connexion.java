@@ -47,7 +47,7 @@ public class Connexion extends AsyncTask {
     }
 
     public void connexion() {
-        String apiUrl = "http://10.0.2.2/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/index.php";
+        String apiUrl = "https://steven.mezkay.ovh/api/index.php";
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
