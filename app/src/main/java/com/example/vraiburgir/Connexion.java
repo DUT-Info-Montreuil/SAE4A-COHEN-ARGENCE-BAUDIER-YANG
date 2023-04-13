@@ -21,10 +21,12 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.net.URIBuilder;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -32,10 +34,13 @@ public class Connexion extends AsyncTask {
     private String token;
     private String login;
     private String mdp;
+    private int typeUtilisateur; //1:admin, 2:cuisine, 3:user
 
     public Connexion(String login, String mdp) {
         this.login = login;
         this.mdp = mdp;
+
+
         execute();
         try {
             get();
@@ -136,6 +141,25 @@ public class Connexion extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         connexion();
+        try {
+            this.typeUtilisateur = this.typeUser();
+            System.out.println("-------------------------------------------------------------------------------------------> typeUser :" + typeUtilisateur);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         return null;
+    }
+
+    public int typeUser() throws JSONException {
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+
+        String payload = new String(decoder.decode(chunks[1]));
+        JSONObject json = new JSONObject(payload);
+        return json.getInt("idType");
+    }
+
+    public int getTypeUtilisateur() {
+        return typeUtilisateur;
     }
 }
