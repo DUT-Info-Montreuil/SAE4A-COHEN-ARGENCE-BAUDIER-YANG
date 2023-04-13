@@ -39,7 +39,9 @@ public class RequeteApi extends AsyncTask {
                 builder.addParameter(key, variables.get(key));
             }
             HttpGet request = new HttpGet(builder.build());
-            request.addHeader("Authorization", "Bearer " + connexion.getToken());
+            if (connexion != null){
+                request.addHeader("Authorization", "Bearer " + connexion.getToken());
+            }
             CloseableHttpResponse response = httpClient.execute(request);
             try {
                 HttpEntity entity = response.getEntity();/*
