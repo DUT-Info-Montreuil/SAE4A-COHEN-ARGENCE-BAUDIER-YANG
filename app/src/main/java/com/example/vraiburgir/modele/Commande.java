@@ -40,6 +40,7 @@ public class Commande {
     }
 
     public double getPrixCommande() {
+        defPrixTotal();
         return prixCommande;
     }
 
