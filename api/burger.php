@@ -65,8 +65,8 @@ function get_burger()
 
 function add_burger()
 {
-    if (!isset($_POST['nomBurger'], $_POST['description'], $_POST['ingredients'])) {
-        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : /http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=add&nomBurger=?&description=?&ingredients=?");
+    if (!isset($_POST['nomBurger'], $_POST['description'], $_POST['ingredients'], $_POST['prix'])) {
+        message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : /http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=add&nomBurger=?&description=?&ingredients=?&prix=?");
         exit();
     }
 
@@ -74,8 +74,8 @@ function add_burger()
 
     try {
         global $token;
-        $sth = Connexion::$bdd->prepare('insert into Burgers Values(NULL, ?, ?, ?, 0)');
-        $sth->execute(array($_POST['nomBurger'], $_POST['description'], $token['idUser']));
+        $sth = Connexion::$bdd->prepare('insert into Burgers Values(NULL, ?, ?, ?, ?)');
+        $sth->execute(array($_POST['nomBurger'], $_POST['description'], $token['idUser'], $_POST['prix']));
 
         $id = Connexion::$bdd->lastInsertId();
         add_ingredients_dans_burger($id);
@@ -103,17 +103,21 @@ function update_burger()
         exit();
     }
 
-    if (isset($_POST['nomBurger']) || isset($_POST['description'])) {
+    if (isset($_POST['nomBurger']) || isset($_POST['description']) || isset($_POST['prix'])) {
         $sql = 'update Burgers set ';
         if (isset($_POST['nomBurger'])) {
-            $sql = $sql . 'nomBurger = :nomBurger';
+            $sql = $sql . 'nomBurger = :nomBurger,';
         }
-        if (isset($_POST['description'])) {
-            if (isset($_POST['nomBurger'])) {
-                $sql = $sql . ', ';
-            }
-            $sql = $sql . ' description = :description';
+        if (isset($_POST['description'])) { 
+            $sql = $sql . ' description = :description,';
         }
+
+        if (isset($_POST['prix'])) { 
+            $sql = $sql . ' prix = :prix';
+        }
+        
+        if (substr($sql, -1) == ',')
+            substr($string, 0, -1);
         $sql = $sql . ' where idBurger = :idBurger';
 
         $sth = Connexion::$bdd->prepare($sql);
@@ -121,6 +125,8 @@ function update_burger()
             $sth->bindParam(':nomBurger', $_POST['nomBurger'], PDO::PARAM_STR);
         if (isset($_POST['description']))
             $sth->bindParam(':description', $_POST['description'], PDO::PARAM_STR);
+        if (isset($_POST['prix']))
+            $sth->bindParam(':prix', $_POST['prix'], PDO::PARAM_INT);
         $sth->bindParam(':idBurger', $_POST['idBurger'], PDO::PARAM_INT);
         $sth->execute();
     }
