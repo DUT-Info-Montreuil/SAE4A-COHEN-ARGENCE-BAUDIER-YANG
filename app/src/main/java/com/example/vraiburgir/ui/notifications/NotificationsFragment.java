@@ -90,19 +90,6 @@ public class NotificationsFragment extends Fragment {
                 return;
             }
 
-            // Vérifie si l'adresse e-mail est valide
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(getContext(), "Veuillez saisir une adresse e-mail valide", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Vérifie si le mot de passe contient ce qu'il faut
-            String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
-            if (!password.matches(passwordPattern)) {
-                Toast.makeText(getContext(), "Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             // CONNEXION
             this.connexion = new Connexion(email, password);
             System.out.println("token " + connexion.getToken());
@@ -117,7 +104,7 @@ public class NotificationsFragment extends Fragment {
                         Toast.makeText(getContext(), " " + reponse.get("message"), Toast.LENGTH_SHORT).show();
                     } else {
                         connected = true;
-                        verifieConnexion();
+                        verifieConnexion(reponse.get("login").toString());
                         view.invalidate();
                         // ...
                         Toast.makeText(getContext(), "Ravie de vous revoir " + reponse.get("login"), Toast.LENGTH_SHORT).show();
@@ -135,12 +122,12 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        verifieConnexion();
+        verifieConnexion("");
 
         return view;
     }
 
-    public void verifieConnexion() {
+    public void verifieConnexion(String login) {
         if (!isConnected()) {
             editTextEmail.setVisibility(View.VISIBLE);
             editTextPassword.setVisibility(View.VISIBLE);
@@ -150,7 +137,7 @@ public class NotificationsFragment extends Fragment {
             buttonModif.setVisibility(View.GONE);
         } else {
             // TODO remplacer "user" + afficher des infos
-            textViewBonjour.setText("Bonjour,\n" + "user\n" + "infos");
+            textViewBonjour.setText("Bonjour,\n" + login);
             //
             textViewBonjour.setVisibility(View.VISIBLE);
             editTextEmail.setVisibility(View.GONE);

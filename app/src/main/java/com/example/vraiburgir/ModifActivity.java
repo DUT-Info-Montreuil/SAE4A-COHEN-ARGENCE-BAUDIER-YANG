@@ -9,6 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
 public class ModifActivity extends AppCompatActivity {
 
     private EditText editTextPseudo;
@@ -17,6 +23,7 @@ public class ModifActivity extends AppCompatActivity {
     private EditText editPhoneNumber;
     private EditText editTextFirstName;
     private EditText editTextLastName;
+    private Connexion connexion;
     private Button buttonModif;
     private Button buttonModifMdp;
 
@@ -41,13 +48,35 @@ public class ModifActivity extends AppCompatActivity {
 
 
         //TODO
-        //remplacer les setText par des methodes de l'api
-        editTextPseudo.setText("oui");
-        editTextEmail.setText("oui");
-        editTextAddress.setText("oui");
-        editPhoneNumber.setText("oui");
-        editTextFirstName.setText("oui");
-        editTextLastName.setText("oui");
+        this.connexion = new Connexion("tet", "Aa123456");
+        System.out.println("token " + connexion.getToken());
+        if (connexion.connected()) {
+            HashMap<String, String> variables = new HashMap<>();
+            variables.put("requete", "infos_utilisateur"); // inscription
+            RequeteApi requeteApi = new RequeteApi(connexion, variables);
+            requeteApi.execute();
+            try {
+                JSONObject reponse = (JSONObject) requeteApi.get();
+                if (reponse.has("message")) {
+                    Toast.makeText(getApplicationContext(), " " + reponse.get("message"), Toast.LENGTH_SHORT).show();
+                } else {
+                    editTextPseudo.setText(reponse.get("login").toString());
+                    editTextEmail.setText(reponse.get("email").toString());
+                    editTextAddress.setText(reponse.get("adresse").toString());
+                    editPhoneNumber.setText(reponse.get("tel").toString());
+                    editTextFirstName.setText(reponse.get("prenom").toString());
+                    editTextLastName.setText(reponse.get("nom").toString());
+                }
+
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
 
         Button buttonModif = findViewById(R.id.buttonModif);
         buttonModif.setOnClickListener(view -> {
