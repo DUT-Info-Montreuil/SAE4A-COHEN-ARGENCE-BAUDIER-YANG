@@ -3,6 +3,8 @@ package com.example.vraiburgir;
 import android.os.AsyncTask;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -21,11 +23,11 @@ import java.util.concurrent.ExecutionException;
 
 public class RequeteApi extends AsyncTask {
 
-    private static final String apiUrl = "https://mezkay.xyz/sae4a/api/index.php";
+    private static final String apiUrl = "http://10.0.2.2/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/index.php";
     private Connexion connexion;
-    private HashMap<String, String> variables;
+    private List<NameValuePair> variables;
 
-    public RequeteApi(Connexion connexion, HashMap<String, String> variables) {
+    public RequeteApi(Connexion connexion, List<NameValuePair> variables) {
         this.connexion = connexion;
         this.variables = variables;
     }
@@ -34,13 +36,17 @@ public class RequeteApi extends AsyncTask {
         JSONObject json = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
+            /*
             URIBuilder builder = new URIBuilder(apiUrl);
             for (String key : variables.keySet()) {
                 builder.addParameter(key, variables.get(key));
             }
             HttpGet request = new HttpGet(builder.build());
-            request.addHeader("Authorization", "Bearer " + connexion.getToken());
-            CloseableHttpResponse response = httpClient.execute(request);
+            */
+            HttpPost httpPost = new HttpPost(apiUrl);
+            httpPost.setEntity(new UrlEncodedFormEntity(variables));
+            httpPost.addHeader("Authorization", "Bearer " + connexion.getToken());
+            CloseableHttpResponse response = httpClient.execute(httpPost);
             try {
                 HttpEntity entity = response.getEntity();/*
                     String responseString = EntityUtils.toString(entity, "UTF-8");

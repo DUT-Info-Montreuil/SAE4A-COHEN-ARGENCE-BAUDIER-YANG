@@ -47,26 +47,26 @@ public class Connexion extends AsyncTask {
     }
 
     public void connexion() {
-        String apiUrl = "https://mezkay.xyz/sae4a/api/index.php";
+        String apiUrl = "http://10.0.2.2/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/index.php";
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-            URIBuilder builder = new URIBuilder(apiUrl);
-            builder.setParameter("requete", "connexion")
-                    .setParameter("login", login)
-                    .setParameter("mdp", mdp);
+//            URIBuilder builder = new URIBuilder(apiUrl);
+//            builder.setParameter("requete", "connexion")
+//                    .setParameter("login", login)
+//                    .setParameter("mdp", mdp);
+//
+//            HttpGet request = new HttpGet(builder.build());
+//            CloseableHttpResponse response = httpClient.execute(request);
 
-            HttpGet request = new HttpGet(builder.build());
-            CloseableHttpResponse response = httpClient.execute(request);
-
-//            HttpPost httpPost = new HttpPost(apiUrl);
-//            List<NameValuePair> nvps = new ArrayList<>();
-//            nvps.add(new BasicNameValuePair("requete", "connexion"));
-//            nvps.add(new BasicNameValuePair("login", login));
-//            nvps.add(new BasicNameValuePair("mdp", mdp));
-//            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-//            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpPost httpPost = new HttpPost(apiUrl);
+            List<NameValuePair> nvps = new ArrayList<>();
+            nvps.add(new BasicNameValuePair("requete", "connexion"));
+            nvps.add(new BasicNameValuePair("login", login));
+            nvps.add(new BasicNameValuePair("mdp", mdp));
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+            CloseableHttpResponse response = httpClient.execute(httpPost);
             try {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
@@ -90,41 +90,7 @@ public class Connexion extends AsyncTask {
             }
         }
     }
-/*
-    public void connexion() {
-        String apiUrl = "http://localhost/~syang/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/index.php";
 
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-
-        try {
-            URIBuilder builder = new URIBuilder(apiUrl);
-            builder.setParameter("requete", "connexion").setParameter("login", login)
-                    .setParameter("mdp", mdp);
-
-            HttpGet request = new HttpGet(builder.build());
-            CloseableHttpResponse response = httpClient.execute(request);
-
-            try {
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    String responseBody = EntityUtils.toString(entity);
-                    JSONObject json = new JSONObject(responseBody);
-                    token = json.getString("token");
-                }
-            } finally {
-                response.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    */
     public String getToken() {
         return token;
     }

@@ -29,7 +29,9 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.net.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +39,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class NotificationsFragment extends Fragment {
@@ -101,8 +105,8 @@ public class NotificationsFragment extends Fragment {
             Connexion connexion = new Connexion(email, password);
             System.out.println("token " + connexion.getToken());
             if (connexion.connected()) {
-                HashMap<String, String> variables = new HashMap<>();
-                variables.put("requete", "infos_utilisateur");
+                List<NameValuePair> variables = new ArrayList<>();
+                variables.add(new BasicNameValuePair("requete", "infos_utilisateur"));
                 RequeteApi requeteApi = new RequeteApi(connexion, variables);
                 requeteApi.execute();
                 try {
