@@ -18,8 +18,10 @@ Notre projet repose sur une API avec laquelle nous communiquons grâce au protoc
 
 ## Précisions API
 
-- La branche **master** contient l'application. La branche **api** contient le code l'API.
+- L'API est dans le dossier **api** sur la branche **master** l'API.
 - Nous avons fait hebergé l'API en ligne, il se peut qu'elle ne soit plus disponible au moment ou vous essayez l'application
+
+
 
 
 ## Maquette
@@ -39,3 +41,10 @@ Notre projet repose sur une API avec laquelle nous communiquons grâce au protoc
 - [@Baxel01](https://github.com/Baxel01) - Axel BAUDIER
 
 Projet réalisé dans le cadre de la **SAÉ Développement Mobile**.
+
+## Ancien repo
+
+Suite à une organisation compliqué notamment due aux problèmes du S4. Nous avons décidé de créer un nouveau GitHub et de recommencer le projet.
+
+Par soucis de conscienciosité voici le lien de notre ancien repo : 
+https://github.com/ismaelargence/ZaZa-Burger
