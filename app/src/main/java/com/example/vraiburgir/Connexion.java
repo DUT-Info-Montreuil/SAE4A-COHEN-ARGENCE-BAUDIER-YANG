@@ -38,33 +38,30 @@ public class Connexion extends AsyncTask {
     }
 
     public void connexion() {
-        String apiUrl = "https://slimy-hounds-walk-194-254-119-253.loca.lt/api/connexion";
+        String apiUrl = "https://mezkay.xyz/sae4a/api/index.php";
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-//            URIBuilder builder = new URIBuilder(apiUrl);
-//            builder.setParameter("login", login)
-//                    .setParameter("mdp", mdp);
-//
-//            HttpGet request = new HttpGet(builder.build());
-//            CloseableHttpResponse response = httpClient.execute(request);
+            URIBuilder builder = new URIBuilder(apiUrl);
+            builder.setParameter("requete", "connexion")
+                    .setParameter("login", login)
+                    .setParameter("mdp", mdp);
 
-            HttpPost httpPost = new HttpPost(apiUrl);
-            List<NameValuePair> nvps = new ArrayList<>();
-            nvps.add(new BasicNameValuePair("login", login));
-            nvps.add(new BasicNameValuePair("mdp", mdp));
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-            httpPost.addHeader("Bypass-Tunnel-Reminder", " aaa");
-            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpGet request = new HttpGet(builder.build());
+            CloseableHttpResponse response = httpClient.execute(request);
+
+//            HttpPost httpPost = new HttpPost(apiUrl);
+//            List<NameValuePair> nvps = new ArrayList<>();
+//            nvps.add(new BasicNameValuePair("requete", "connexion"));
+//            nvps.add(new BasicNameValuePair("login", login));
+//            nvps.add(new BasicNameValuePair("mdp", mdp));
+//            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+//            CloseableHttpResponse response = httpClient.execute(httpPost);
             try {
-                System.out.println("!!!!!!!!!");
                 HttpEntity entity = response.getEntity();
-                System.out.println("?????????");
                 if (entity != null) {
                     String responseBody = EntityUtils.toString(entity);
-                    System.out.println("test");
-                    System.out.println(responseBody);
                     JSONObject json = new JSONObject(responseBody);
                     token = json.getString("token");
                 }

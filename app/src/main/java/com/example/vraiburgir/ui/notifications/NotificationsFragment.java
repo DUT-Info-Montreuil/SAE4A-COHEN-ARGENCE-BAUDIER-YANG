@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class NotificationsFragment extends Fragment {
 
@@ -98,7 +99,14 @@ public class NotificationsFragment extends Fragment {
             // Effectue l'action de connexion (par exemple, en utilisant une API)
             Connexion connexion = new Connexion("tet", "Aa123456");
             connexion.execute();
-            System.out.println("token " + connexion.getToken());
+            try {
+                connexion.get();
+                System.out.println("token " + connexion.getToken());
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 //            String apiUrl = "http://127.0.0.1/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers";
 //
 //            CloseableHttpClient httpClient = HttpClients.createDefault();

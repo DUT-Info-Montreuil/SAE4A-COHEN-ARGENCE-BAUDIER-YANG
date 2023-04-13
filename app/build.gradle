@@ -42,8 +42,7 @@ android {
 
 dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation fileTree(dir: '/home/ismael/Téléchargements/httpcomponents-client-5.2.1-bin', include: ['*.aar', '*.jar'], exclude: [])
-    implementation fileTree(dir: '/home/ismael/Téléchargements/httpcomponents-client-5.2.1-bin/lib', include: ['*.aar', '*.jar'], exclude: [])
+    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.2.1'
     constraints{
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
