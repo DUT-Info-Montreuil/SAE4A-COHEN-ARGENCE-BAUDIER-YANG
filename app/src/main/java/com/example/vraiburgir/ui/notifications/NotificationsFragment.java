@@ -20,6 +20,7 @@ import com.example.vraiburgir.Connexion;
 import com.example.vraiburgir.MainActivity;
 import com.example.vraiburgir.ModifActivity;
 import com.example.vraiburgir.R;
+import com.example.vraiburgir.RequeteApi;
 import com.example.vraiburgir.SignupActivity;
 import com.example.vraiburgir.databinding.FragmentNotificationsBinding;
 
@@ -31,10 +32,13 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.net.URIBuilder;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class NotificationsFragment extends Fragment {
 
@@ -45,6 +49,7 @@ public class NotificationsFragment extends Fragment {
     private Button buttonModif;
     private Button buttonLogin;
     private TextView textViewBonjour;
+    private Connexion connexion;
 
     private FragmentNotificationsBinding binding;
 
@@ -87,64 +92,44 @@ public class NotificationsFragment extends Fragment {
                 return;
             }
 
-            // Vérifie si le mot de passe contient ce qu'il faut
-            String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+            // Vérifie si le mot de passe contient ce qu'il faut (?=.*[@#$%^&+=!])
+            String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
             if (!password.matches(passwordPattern)) {
                 Toast.makeText(getContext(), "Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // TODO
-            // Effectue l'action de connexion (par exemple, en utilisant une API)
-            Connexion connexion = new Connexion("tet", "Aa123456");
-            connexion.execute();
+            // CONNEXION
+            this.connexion = new Connexion(email, password);
             System.out.println("token " + connexion.getToken());
-//            String apiUrl = "http://127.0.0.1/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers";
-//
-//            CloseableHttpClient httpClient = HttpClients.createDefault();
-//            Connexion connexion = new Connexion("tet", "Aa123456");
-//            try {
-//                URIBuilder builder = new URIBuilder(apiUrl);
-//                HttpGet request = new HttpGet(builder.build());
-//                request.addHeader("Authorization", "Bearer " + connexion.getToken());
-//                CloseableHttpResponse response = httpClient.execute(request);
-//
-//                try {
-//                    HttpEntity entity = response.getEntity();/*
-//                    String responseString = EntityUtils.toString(entity, "UTF-8");
-//                    System.out.println(responseString);*/
-//                    if (entity != null) {
-//                        String responseBody = EntityUtils.toString(entity);
-//                        JSONTokener tokener = new JSONTokener(responseBody);
-//                        if (tokener.nextClean() == '[') {
-//                            JSONArray json = new JSONArray(responseBody);
-//                            System.out.println(json.toString());
-//                        } else {
-//                            JSONObject json = new JSONObject(responseBody);
-//                            System.out.println(json.toString());
-//                        }
-//                    }
-//                } finally {
-//                    response.close();
-//                }
-//            } catch (Exception e) {
-//                System.out.println("ok");
-//                e.printStackTrace();
-//            } finally {
-//                System.out.println("ok2");
-//                try {
-//                    httpClient.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-            // Remplacer le text dans le toast
-            connected = true;
-            verifieConnexion();
-            view.invalidate();
-            // ...
-            Toast.makeText(getContext(), "Ravie de vous revoir " + "#mettre le nom de m'utilisater", Toast.LENGTH_SHORT).show();
-            //
+            if (connexion.connected()) {
+                HashMap<String, String> variables = new HashMap<>();
+                variables.put("requete", "infos_utilisateur");
+                RequeteApi requeteApi = new RequeteApi(connexion, variables);
+                requeteApi.execute();
+                try {
+                    JSONObject reponse = (JSONObject) requeteApi.get();
+                    if (reponse.has("message")) {
+                        Toast.makeText(getContext(), " " + reponse.get("message"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Remplacer le text dans le toast
+                        connected = true;
+                        verifieConnexion();
+                        view.invalidate();
+                        // ...
+                        Toast.makeText(getContext(), "Ravie de vous revoir " + reponse.get("login"), Toast.LENGTH_SHORT).show();
+                        //
+                    }
+
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
         });
 
         verifieConnexion();
@@ -152,7 +137,7 @@ public class NotificationsFragment extends Fragment {
         return view;
     }
 
-    public void verifieConnexion(){
+    public void verifieConnexion() {
         if (!isConnected()) {
             editTextEmail.setVisibility(View.VISIBLE);
             editTextPassword.setVisibility(View.VISIBLE);
@@ -162,7 +147,7 @@ public class NotificationsFragment extends Fragment {
             buttonModif.setVisibility(View.GONE);
         } else {
             // TODO remplacer "user" + afficher des infos
-            textViewBonjour.setText("Bonjour,\n"+ "user\n" + "infos");
+            textViewBonjour.setText("Bonjour,\n" + "user\n" + "infos");
             //
             textViewBonjour.setVisibility(View.VISIBLE);
             editTextEmail.setVisibility(View.GONE);

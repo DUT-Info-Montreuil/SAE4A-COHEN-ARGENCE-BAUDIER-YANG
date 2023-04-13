@@ -2,6 +2,7 @@ package com.example.vraiburgir;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Connexion extends AsyncTask {
     private String token;
@@ -34,39 +36,46 @@ public class Connexion extends AsyncTask {
     public Connexion(String login, String mdp) {
         this.login = login;
         this.mdp = mdp;
-        //connexion();
+        execute();
+        try {
+            get();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void connexion() {
-        String apiUrl = "https://slimy-hounds-walk-194-254-119-253.loca.lt/api/connexion";
+        String apiUrl = "https://mezkay.xyz/sae4a/api/index.php";
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-//            URIBuilder builder = new URIBuilder(apiUrl);
-//            builder.setParameter("login", login)
-//                    .setParameter("mdp", mdp);
-//
-//            HttpGet request = new HttpGet(builder.build());
-//            CloseableHttpResponse response = httpClient.execute(request);
+            URIBuilder builder = new URIBuilder(apiUrl);
+            builder.setParameter("requete", "connexion")
+                    .setParameter("login", login)
+                    .setParameter("mdp", mdp);
 
-            HttpPost httpPost = new HttpPost(apiUrl);
-            List<NameValuePair> nvps = new ArrayList<>();
-            nvps.add(new BasicNameValuePair("login", login));
-            nvps.add(new BasicNameValuePair("mdp", mdp));
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-            httpPost.addHeader("Bypass-Tunnel-Reminder", " aaa");
-            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpGet request = new HttpGet(builder.build());
+            CloseableHttpResponse response = httpClient.execute(request);
+
+//            HttpPost httpPost = new HttpPost(apiUrl);
+//            List<NameValuePair> nvps = new ArrayList<>();
+//            nvps.add(new BasicNameValuePair("requete", "connexion"));
+//            nvps.add(new BasicNameValuePair("login", login));
+//            nvps.add(new BasicNameValuePair("mdp", mdp));
+//            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+//            CloseableHttpResponse response = httpClient.execute(httpPost);
             try {
-                System.out.println("!!!!!!!!!");
                 HttpEntity entity = response.getEntity();
-                System.out.println("?????????");
                 if (entity != null) {
                     String responseBody = EntityUtils.toString(entity);
-                    System.out.println("test");
-                    System.out.println(responseBody);
                     JSONObject json = new JSONObject(responseBody);
-                    token = json.getString("token");
+                    if (json.has("token"))
+                        token = json.getString("token");
+                    else
+                        System.out.println(json.getString("message"));
                 }
             } finally {
 
@@ -118,6 +127,10 @@ public class Connexion extends AsyncTask {
     */
     public String getToken() {
         return token;
+    }
+
+    public boolean connected() {
+        return token != null;
     }
 
     @Override

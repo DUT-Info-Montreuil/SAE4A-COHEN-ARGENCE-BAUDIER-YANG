@@ -1,6 +1,7 @@
 package com.example.vraiburgir.ui.home;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,12 +19,22 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vraiburgir.Connexion;
 import com.example.vraiburgir.R;
 import com.example.vraiburgir.ui.adapter.BurgerAdapter;
+import com.example.vraiburgir.RequeteApi;
+import com.example.vraiburgir.adapter.BurgerAdapter;
 import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
+import com.example.vraiburgir.ui.notifications.NotificationsFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickListener {
 
@@ -33,6 +44,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private Button personnaliseBurgerButton;
     private SearchView searchViewBurger;
     private LinearLayout layoutCreationBurger;
+    private Connexion tempConnexion;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -43,6 +55,16 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
         //Récupération liste burger
         ArrayList<Burger> listeBurgers = this.listTempBurgers();
+        ArrayList<Burger> listeBurgers = null;
+        try {
+            listeBurgers = this.listTempBurgers();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         // set up the RecyclerView
         this.recyclerView = root.findViewById(R.id.listeBurger);
@@ -99,21 +121,25 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         this.searchViewBurger.clearFocus();
     }
 
-    private ArrayList<Burger> listTempBurgers() {
-        // TEMPORAIRE FAUT UTILISER L'API
+    private ArrayList<Burger> listTempBurgers() throws ExecutionException, InterruptedException, JSONException {
         ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
-        listeBurgers.add(new Burger(1,"Le Cheesy","test",null,0,50));
-        listeBurgers.add(new Burger(2,"Steaaak","test",null,0,0));
-        listeBurgers.add(new Burger(3,"PinPon","test",null,0,0));
-        listeBurgers.add(new Burger(4,"Cheddar","test",null,0,0));
-        listeBurgers.add(new Burger(5,"*_*","test",null,0,0));
-        listeBurgers.add(new Burger(6,"kawaiidessu","test",null,0,0));
-        listeBurgers.add(new Burger(7,"sisoko biscoto","test",null,0,0));
-        listeBurgers.add(new Burger(8,"Bibou Burger","test",null,0,0));
-        listeBurgers.add(new Burger(9,"Miam Miam","test",null,0,0));
-        listeBurgers.add(new Burger(10,"Bar a coquilette","test",null,0,0));
-        listeBurgers.add(new Burger(11,"Sisi si siiiii","test",null,0,0));
-        listeBurgers.add(new Burger(12,"Kono sekai wane","test",null,0,0));
+        this.tempConnexion = new Connexion("tet","Aa123456");
+        HashMap<String, String> variables2 = new HashMap<>();
+        variables2.put("requete", "burgers");
+        RequeteApi requete = new RequeteApi(this.tempConnexion, variables2);
+        requete.execute();
+        JSONObject reponse2 = (JSONObject) requete.get();
+        if (reponse2.has("message")) {
+            System.out.println(reponse2.get("message"));
+        } else if (reponse2.has("array")) {
+            JSONArray jsonArray = reponse2.getJSONArray("array");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                listeBurgers.add(new Burger(jsonObject.getInt("idBurger"), jsonObject.getString("nomBurger"),
+                        jsonObject.getString("description"),jsonObject.getDouble("prix")));
+            }
+            System.out.println(jsonArray);
+        }
         return listeBurgers;
     }
 
