@@ -27,12 +27,15 @@ import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
 import com.example.vraiburgir.ui.notifications.NotificationsFragment;
 
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickListener {
@@ -122,16 +125,16 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
     private ArrayList<Burger> listTempBurgers() throws ExecutionException, InterruptedException, JSONException {
         ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
-        this.tempConnexion = new Connexion("tet","Aa123456");
-        HashMap<String, String> variables2 = new HashMap<>();
-        variables2.put("requete", "burgers");
-        RequeteApi requete = new RequeteApi(this.tempConnexion, variables2);
-        requete.execute();
-        JSONObject reponse2 = (JSONObject) requete.get();
-        if (reponse2.has("message")) {
-            System.out.println(reponse2.get("message"));
-        } else if (reponse2.has("array")) {
-            JSONArray jsonArray = reponse2.getJSONArray("array");
+        this.tempConnexion = new Connexion("admin","Aa123456");
+        List<NameValuePair> variables = new ArrayList<>();
+        variables.add(new BasicNameValuePair("requete", "burgers"));
+        RequeteApi requeteApi = new RequeteApi(this.tempConnexion, variables);
+        requeteApi.execute();
+        JSONObject reponse = (JSONObject) requeteApi.get();
+        if (reponse.has("message")) {
+            System.out.println(reponse.get("message"));
+        } else if (reponse.has("array")) {
+            JSONArray jsonArray = reponse.getJSONArray("array");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 listeBurgers.add(new Burger(jsonObject.getInt("idBurger"), jsonObject.getString("nomBurger"),
