@@ -1,10 +1,6 @@
 <?php
 header('Content-type: application/json; charset=utf-8');
 
-
-if (constant("lala") != "layn")
-    die("wrong constant");
-
 function get_burgers()
 {
     global $token;
@@ -84,7 +80,7 @@ function add_burger()
         $id = Connexion::$bdd->lastInsertId();
         add_ingredients_dans_burger($id);
         Connexion::$bdd->commit();
-        message(200, 'Burger ajoute.');
+        message(200, $id);
     } catch (PDOException $e) {
         Connexion::$bdd->rollBack();
         message(404, 'Erreur lors de l\'insertion.');
@@ -167,13 +163,13 @@ function add_ingredients_dans_burger($id)
 
     $ingredients = Connexion::$bdd->prepare('select idIngredient, nomIngredient, quantite, prix, (prix*quantite) as total from estCompose natural join Ingredients where idBurger = ?');
     $ingredients->execute(array($id));
-
+    /*
     $prix = 0;
     foreach ($ingredients as $ingredient) {
         $prix += $ingredient['total'];
     }
     $sth = Connexion::$bdd->prepare('update Burgers set prix = ? where idBurger = ?');
-    $sth->execute(array($prix, $id));
+    $sth->execute(array($prix, $id));*/
 }
 
 function delete_burger()
