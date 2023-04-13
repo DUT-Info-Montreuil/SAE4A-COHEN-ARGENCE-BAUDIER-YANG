@@ -21,9 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.Connexion;
 import com.example.vraiburgir.R;
-import com.example.vraiburgir.ui.adapter.BurgerAdapter;
-import com.example.vraiburgir.RequeteApi;
 import com.example.vraiburgir.adapter.BurgerAdapter;
+import com.example.vraiburgir.RequeteApi;
 import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
 import com.example.vraiburgir.ui.notifications.NotificationsFragment;
@@ -54,7 +53,6 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         View root = binding.getRoot();
 
         //Récupération liste burger
-        ArrayList<Burger> listeBurgers = this.listTempBurgers();
         ArrayList<Burger> listeBurgers = null;
         try {
             listeBurgers = this.listTempBurgers();
@@ -65,6 +63,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
 
         // set up the RecyclerView
         this.recyclerView = root.findViewById(R.id.listeBurger);

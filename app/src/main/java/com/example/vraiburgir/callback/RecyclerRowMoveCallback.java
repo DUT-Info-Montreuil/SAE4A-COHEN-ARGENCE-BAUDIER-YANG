@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vraiburgir.ui.adapter.IngredientsChoisisAdapter;
+import com.example.vraiburgir.adapter.IngredientsChoisisAdapter;
 
 public class RecyclerRowMoveCallback extends ItemTouchHelper.Callback {
 

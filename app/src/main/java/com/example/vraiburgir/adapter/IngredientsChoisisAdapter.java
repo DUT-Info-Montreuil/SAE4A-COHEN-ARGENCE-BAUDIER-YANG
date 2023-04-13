@@ -1,4 +1,4 @@
-package com.example.vraiburgir.ui.adapter;
+package com.example.vraiburgir.adapter;
 
 import android.content.Context;
 import android.graphics.Color;

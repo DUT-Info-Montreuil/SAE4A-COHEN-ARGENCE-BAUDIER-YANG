@@ -1,21 +1,15 @@
 package com.example.vraiburgir;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
-import com.example.vraiburgir.ui.adapter.IngredientsChoisisAdapter;
+import com.example.vraiburgir.adapter.IngredientsChoisisAdapter;
 import com.example.vraiburgir.callback.RecyclerRowMoveCallback;
 
 import java.util.ArrayList;
