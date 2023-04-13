@@ -92,8 +92,8 @@ public class NotificationsFragment extends Fragment {
                 return;
             }
 
-            // Vérifie si le mot de passe contient ce qu'il faut (?=.*[@#$%^&+=!])
-            String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+            // Vérifie si le mot de passe contient ce qu'il faut
+            String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
             if (!password.matches(passwordPattern)) {
                 Toast.makeText(getContext(), "Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial", Toast.LENGTH_SHORT).show();
                 return;
@@ -112,7 +112,6 @@ public class NotificationsFragment extends Fragment {
                     if (reponse.has("message")) {
                         Toast.makeText(getContext(), " " + reponse.get("message"), Toast.LENGTH_SHORT).show();
                     } else {
-                        // Remplacer le text dans le toast
                         connected = true;
                         verifieConnexion();
                         view.invalidate();

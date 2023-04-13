@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,10 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vraiburgir.Connexion;
 import com.example.vraiburgir.R;
+import com.example.vraiburgir.SingletonData;
 import com.example.vraiburgir.adapter.BurgerAdapter;
 import com.example.vraiburgir.RequeteApi;
 import com.example.vraiburgir.databinding.FragmentHomeBinding;
 import com.example.vraiburgir.modele.Burger;
+import com.example.vraiburgir.modele.Commande;
 import com.example.vraiburgir.ui.notifications.NotificationsFragment;
 
 import org.json.JSONArray;
@@ -44,6 +47,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private SearchView searchViewBurger;
     private LinearLayout layoutCreationBurger;
     private Connexion tempConnexion;
+    private Commande commande = new Commande(1, new ArrayList<>());
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -72,7 +76,11 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         this.adapter.setClickListener(this);
         this.recyclerView.setAdapter(this.adapter);
 
-        //Personnalisation burger
+        SingletonData.getInstance().setCommande(commande);
+//        adapter.changeFragment();
+
+        //PERSONNALISATION BURGER
+
         this.personnaliseBurgerButton = root.findViewById(R.id.personnalisationBurgerBoutton);
         this.personnaliseBurgerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +102,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
                     layoutCreationBurger.setVisibility(View.GONE);
                 return true;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!adapter.filter(newText))
@@ -148,21 +157,16 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         builder.setMessage("Voulez vous ajouter cette article à votre panier ?");
-        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // OUI
-            }
+
+        builder.setPositiveButton("Oui", (dialog, which) -> {
+            commande.addBurger(adapter.getBurger(position));
+            Toast.makeText(getContext(), "Burger ajouté", Toast.LENGTH_SHORT).show();
         });
-        builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // NON
-            }
+
+        builder.setNegativeButton("Non", (dialog, which) -> {
+            // NON
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
 }

@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextPseudo"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/teal_700"
+        android:backgroundTint="@color/cheddar"
         android:text="Valider" />
 
     <Button
@@ -76,6 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonModif"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/cheddar"
         android:text="Modifier le mot de passe" />
 
 </RelativeLayout>
