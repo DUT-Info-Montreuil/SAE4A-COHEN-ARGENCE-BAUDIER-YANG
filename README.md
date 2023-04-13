@@ -24,6 +24,10 @@ Notre projet repose sur une API avec laquelle nous communiquons grâce au protoc
 
 ## Maquette
 
+    Quelques images de l'applation (screen d'une plus vielle version)
+![home_menu](https://imgur.com/F6LFUqr)
+![recherche](https://imgur.com/4tJXTE3)
+![panier](https://imgur.com/vnnomUW)
 
 
 
