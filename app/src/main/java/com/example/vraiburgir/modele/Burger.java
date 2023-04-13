@@ -48,4 +48,8 @@ public class Burger {
     public int getIdBurger() {
         return idBurger;
     }
+
+    public void setIdBurger(int idBurger) {
+        this.idBurger = idBurger;
+    }
 }

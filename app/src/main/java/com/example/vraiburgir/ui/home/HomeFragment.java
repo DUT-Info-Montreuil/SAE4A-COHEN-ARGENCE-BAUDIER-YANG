@@ -58,10 +58,11 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
     private LinearLayout layoutCreationBurger;
     public static Connexion tempConnexion;
     private boolean interrupteurSuppresion;
-    private Connexion tempConnexion;
+
     private Commande commande = new Commande(1, new ArrayList<>());
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        tempConnexion = new Connexion("admin", "Aa123456");
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -126,7 +127,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
         });
 
         //ADMIN
-        this.interrupteurSuppresion=false;
+        this.interrupteurSuppresion = false;
         if (this.tempConnexion.getTypeUtilisateur() == 1) {
             LinearLayout adminLayout = root.findViewById(R.id.layoutAdmin);
             adminLayout.setVisibility(View.VISIBLE);
@@ -145,9 +146,9 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        HomeFragment.this.interrupteurSuppresion=true;
+                        HomeFragment.this.interrupteurSuppresion = true;
                     } else {
-                        HomeFragment.this.interrupteurSuppresion=false;
+                        HomeFragment.this.interrupteurSuppresion = false;
                     }
                 }
             });
@@ -172,10 +173,9 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
 
     private ArrayList<Burger> recupererListeBurgerAPI() throws ExecutionException, InterruptedException, JSONException {
         ArrayList<Burger> listeBurgers = new ArrayList<Burger>();
-        //this.tempConnexion = new Connexion("admin","Aa123456");
         List<NameValuePair> variables = new ArrayList<>();
         variables.add(new BasicNameValuePair("requete", "burgers"));
-        RequeteApi requeteApi = new RequeteApi(this.tempConnexion, variables);
+        RequeteApi requeteApi = new RequeteApi(variables);
         requeteApi.execute();
         JSONObject reponse = (JSONObject) requeteApi.get();
         if (reponse.has("message")) {
@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 listeBurgers.add(new Burger(jsonObject.getInt("idBurger"), jsonObject.getString("nomBurger"),
-                        jsonObject.getString("description"),jsonObject.getDouble("prix")));
+                        jsonObject.getString("description"), jsonObject.getDouble("prix")));
             }
             System.out.println(jsonArray);
         }
@@ -214,16 +214,20 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
             builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    HashMap<String, String> variables = new HashMap<>();
-                    variables.put("requete", "delete_burger");
-                    variables.put("idBurger", Integer.toString(HomeFragment.this.adapter.getBurger(position).getIdBurger()));
+                    List<NameValuePair> variables = new ArrayList<>();
+                    variables.add(new BasicNameValuePair("requete", "delete_burger"));
+                    variables.add(new BasicNameValuePair("idBurger", Integer.toString(HomeFragment.this.adapter.getBurger(position).getIdBurger())));
                     RequeteApi requete = new RequeteApi(HomeFragment.this.tempConnexion, variables);
                     requete.execute();
                     JSONObject reponse2 = null;
 
-                    try { reponse2 = (JSONObject) requete.get();
-                    } catch (ExecutionException e) {throw new RuntimeException(e);
-                    } catch (InterruptedException e) {throw new RuntimeException(e);}
+                    try {
+                        reponse2 = (JSONObject) requete.get();
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
                     try {
                         System.out.println(reponse2.get("message"));
@@ -237,7 +241,9 @@ public class HomeFragment extends Fragment implements BurgerAdapter.ItemClickLis
                         } else {
                             Toast.makeText(getContext(), "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
                         }
-                    } catch (JSONException e) {throw new RuntimeException(e);}
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
 
                 }
             });

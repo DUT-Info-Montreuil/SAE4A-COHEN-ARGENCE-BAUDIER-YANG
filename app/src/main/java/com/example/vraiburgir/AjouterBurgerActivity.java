@@ -12,10 +12,14 @@ import android.widget.Toast;
 import com.example.vraiburgir.modele.Burger;
 import com.example.vraiburgir.ui.home.HomeFragment;
 
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class AjouterBurgerActivity extends AppCompatActivity {
@@ -66,24 +70,31 @@ public class AjouterBurgerActivity extends AppCompatActivity {
 
     public void ajouterBurger(Burger burger) throws ExecutionException, InterruptedException, JSONException {
         //gerer burger pas rempli a fond
-        HashMap<String, String> variablesAEnvoyer = new HashMap<>();
-        variablesAEnvoyer.put("requete", "burger");
-        variablesAEnvoyer.put("action", "add");
-        variablesAEnvoyer.put("nomBurger", burger.getNomBurger());
-        variablesAEnvoyer.put("description", burger.getDescriptionBurger());
-        variablesAEnvoyer.put("ingredients","3,3,4");
-        //variablesAEnvoyer.put("prix",burger.getPrix()); QUAND API MODIFIE
+        List<NameValuePair> variablesAEnvoyer = new ArrayList<>();
+        variablesAEnvoyer.add(new BasicNameValuePair("requete", "burger"));
+        variablesAEnvoyer.add(new BasicNameValuePair("action", "add"));
+        variablesAEnvoyer.add(new BasicNameValuePair("nomBurger", burger.getNomBurger()));
+        variablesAEnvoyer.add(new BasicNameValuePair("description", burger.getDescriptionBurger()));
+        variablesAEnvoyer.add(new BasicNameValuePair("ingredients","3,3,4"));
+        variablesAEnvoyer.add(new BasicNameValuePair("prix",Double.toString(burger.getPrixBurger())));
         RequeteApi requete = new RequeteApi(HomeFragment.tempConnexion, variablesAEnvoyer);
         requete.execute();
         //QUAND API MODIFIE RENVERRA UN MESSAGE VALIDE
         JSONObject reponse = (JSONObject) requete.get();
+
         if (reponse.has("message")) {
-            //ERREUR Vous avez pas permissions ou mauvais url
-            System.out.println(reponse.get("message"));
-            Toast.makeText(getApplicationContext(), "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
+            String message = reponse.getString("message");
+            if (message.equals("Burger pas trouve ou pas le votre")) {
+                //ERREUR Vous avez pas permissions ou mauvais url
+                System.out.println(reponse.get("message"));
+                Toast.makeText(getApplicationContext(), "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
+            } else {
+                //renvoie id plus tards afin d'en attribuer un car il en a pas pr l'instant pr l'instant renvoie burger
+                Toast.makeText(getApplicationContext(), "Burger crée!", Toast.LENGTH_SHORT).show();
+                burger.setIdBurger(Integer.parseInt(message));
+            }
         } else {
-            //renvoie id plus tards afin d'en attribuer un car il en a pas pr l'instant pr l'instant renvoie burger
-            Toast.makeText(getApplicationContext(), "Burger crée!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Erreur communication avec l'api", Toast.LENGTH_SHORT).show();
         }
     }
 }
