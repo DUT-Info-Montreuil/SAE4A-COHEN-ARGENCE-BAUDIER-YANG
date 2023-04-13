@@ -2,6 +2,7 @@ package com.example.vraiburgir;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Connexion extends AsyncTask {
     private String token;
@@ -34,7 +36,14 @@ public class Connexion extends AsyncTask {
     public Connexion(String login, String mdp) {
         this.login = login;
         this.mdp = mdp;
-        //connexion();
+        execute();
+        try {
+            get();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void connexion() {
@@ -63,7 +72,10 @@ public class Connexion extends AsyncTask {
                 if (entity != null) {
                     String responseBody = EntityUtils.toString(entity);
                     JSONObject json = new JSONObject(responseBody);
-                    token = json.getString("token");
+                    if (json.has("token"))
+                        token = json.getString("token");
+                    else
+                        System.out.println(json.getString("message"));
                 }
             } finally {
 
@@ -115,6 +127,10 @@ public class Connexion extends AsyncTask {
     */
     public String getToken() {
         return token;
+    }
+
+    public boolean connected() {
+        return token != null;
     }
 
     @Override
