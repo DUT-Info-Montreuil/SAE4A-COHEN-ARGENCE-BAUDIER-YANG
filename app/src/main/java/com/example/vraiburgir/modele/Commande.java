@@ -8,9 +8,22 @@ public class Commande {
     private int idUser;
     private ArrayList<Burger> contenuCommande;
 
+    private int idCommande;
+
     public Commande(int idUser, boolean commandeEffectue, double prixCommande, ArrayList<Burger> contenuCommande) {
         this.idUser = idUser;
         this.contenuCommande = contenuCommande;
+        this.idCommande = -1;
+    }
+
+    public Commande(int idCommande, int idUser, boolean commandeEffectue, double prixCommande, ArrayList<Burger> contenuCommande) {
+        this.idUser = idUser;
+        this.contenuCommande = contenuCommande;
+        this.idCommande = idCommande;
+    }
+
+    public int getIdCommande(){
+        return idCommande;
     }
 
     //Il faut que quand je me reconnecte il puisse vérifier si j'ai une commande en cours depuis l'api et me l'afficher;
