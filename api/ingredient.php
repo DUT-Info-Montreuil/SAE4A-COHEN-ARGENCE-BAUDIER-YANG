@@ -16,12 +16,12 @@ function get_ingredients()
 
 function get_ingredient()
 {
-    if (!isset($_GET['idIngredient'])) {
+    if (!isset($_POST['idIngredient'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&idIngredient=?");
         exit();
     }
     $sth = Connexion::$bdd->prepare('select * from Ingredients where idIngredient = ?');
-    $sth->execute(array($_GET['idIngredient']));
+    $sth->execute(array($_POST['idIngredient']));
     if ($sth->rowCount() > 0) {
         http_response_code(200);
         echo json_encode($sth->fetch());

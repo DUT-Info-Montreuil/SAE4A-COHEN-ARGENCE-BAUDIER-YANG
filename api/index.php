@@ -12,7 +12,7 @@ header('Content-Type: application/json');
 
 Connexion::initConnexion();
 try {
-    if (!empty($_GET['requete'])) {
+    if (!empty($_POST['requete'])) {
         if (verif_token()) {
             $requete_trouve = false;
             global $token;
@@ -25,12 +25,16 @@ try {
                     if (!$requete_trouve) utilisateur();
             }
         } else {
-            switch ($_GET['requete']) {
+            switch ($_POST['requete']) {
                 case "inscription":
                     inscription(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/inscription&login=?&nom=?&prenom=?&tel=?&email=?&mdp=?conf_mdp=?&adresse=?&ville=?&codePostale=?
                     break;
                 case "connexion":
                     connexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
+                    break;
+                case "burgers":
+                    if (isset($_POST['categorie']) && $_POST['categorie'] == 'classique')
+                        get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=classique
                     break;
                 default:
                     message(400, "La requete n'est pas valide, verifiez l'url. Vous devez vous connecter ou token invalide");
@@ -55,10 +59,10 @@ function message($code, $message)
 function admin()
 {
     include_once('admin/ingredient.php');
-    switch ($_GET['requete']) {
+    switch ($_POST['requete']) {
         case "admin_ingredient":
-            if (isset($_GET['action'])) {
-                switch ($_GET['action']) {
+            if (isset($_POST['action'])) {
+                switch ($_POST['action']) {
                     case "add":
                         add_ingredient(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/admin_ingredient&action=add&nomIngredient=?&prix=?&idType=?
                         return true;
@@ -83,7 +87,7 @@ function admin()
 function cuisinier()
 {
     include_once('cuisinier/commande.php');
-    switch ($_GET['requete']) {
+    switch ($_POST['requete']) {
         case "commandes_a_faire":
             get_commandes_a_faire(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
             return true;
@@ -101,7 +105,7 @@ function cuisinier()
 
 function utilisateur()
 {
-    switch ($_GET['requete']) {
+    switch ($_POST['requete']) {
         case "infos_utilisateur":
             infos_utilisateur(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/infos_utilisateur
             break;
@@ -112,8 +116,8 @@ function utilisateur()
             get_ingredient(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/ingredient&idIngredient=?
             break;
         case "burgers":
-            if (isset($_GET['categorie']))
-                if ($_GET['categorie'] == 'personnalise')
+            if (isset($_POST['categorie']))
+                if ($_POST['categorie'] == 'personnalise')
                     get_burgers_personnalises(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=personnalise
                 else
                     get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=classique
@@ -121,8 +125,8 @@ function utilisateur()
                 get_burgers();
             break;
         case "burger":
-            if (isset($_GET['action'])) {
-                switch ($_GET['action']) {
+            if (isset($_POST['action'])) {
+                switch ($_POST['action']) {
                     case "get":
                         get_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?
                         break;
@@ -146,8 +150,8 @@ function utilisateur()
             get_commandes(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commandes
             break;
         case "commande":
-            if (isset($_GET['action'])) {
-                switch ($_GET['action']) {
+            if (isset($_POST['action'])) {
+                switch ($_POST['action']) {
                     case "get":
                         get_commande(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=get&idCommande=?
                         break;

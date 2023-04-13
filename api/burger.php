@@ -31,7 +31,6 @@ function get_burgers_classiques()
 function get_burgers_personnalises()
 {
     global $token;
-    echo $token['idUser'];
     $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers where idUser = ?');
     $burgers->execute(array($token['idUser']));
     if ($burgers->rowCount() > 0) {
@@ -45,17 +44,17 @@ function get_burgers_personnalises()
 
 function get_burger()
 {
-    if (!isset($_GET['idBurger'])) {
+    if (!isset($_POST['idBurger'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=get&idBurger=?");
         exit();
     }
     global $token;
     $burger = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idBurger = ? and (idUser = ? or idType = 2)');
-    $burger->execute(array($_GET['idBurger'], $token['idUser']));
+    $burger->execute(array($_POST['idBurger'], $token['idUser']));
     if ($burger->rowCount() > 0) {
         $burger = $burger->fetch();
         $ingredients = Connexion::$bdd->prepare('select idIngredient, nomIngredient, quantite, prix, (prix*quantite) as total from estCompose natural join Ingredients where idBurger = ?');
-        $ingredients->execute(array($_GET['idBurger']));
+        $ingredients->execute(array($_POST['idBurger']));
         $burger['ingredients'] = $ingredients->fetchAll();
         http_response_code(200);
         echo json_encode($burger);
@@ -66,7 +65,7 @@ function get_burger()
 
 function add_burger()
 {
-    if (!isset($_GET['nomBurger'], $_GET['description'], $_GET['ingredients'])) {
+    if (!isset($_POST['nomBurger'], $_POST['description'], $_POST['ingredients'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : /http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=add&nomBurger=?&description=?&ingredients=?");
         exit();
     }
@@ -76,7 +75,7 @@ function add_burger()
     try {
         global $token;
         $sth = Connexion::$bdd->prepare('insert into Burgers Values(NULL, ?, ?, ?, 0)');
-        $sth->execute(array($_GET['nomBurger'], $_GET['description'], $token['idUser']));
+        $sth->execute(array($_POST['nomBurger'], $_POST['description'], $token['idUser']));
 
         $id = Connexion::$bdd->lastInsertId();
         add_ingredients_dans_burger($id);
@@ -93,26 +92,26 @@ function add_burger()
 
 function update_burger()
 {
-    if (!isset($_GET['idBurger'])) {
+    if (!isset($_POST['idBurger'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=update&idBurger=?&(valeurs a modifier)");
         exit();
     }
 
     global $token;
     $sth = Connexion::$bdd->prepare('select * from Burgers where idBurger = ? and idUser = ?');
-    $sth->execute(array($_GET['idBurger'], $token['idUser']));
+    $sth->execute(array($_POST['idBurger'], $token['idUser']));
     if ($sth->rowCount() == 0) {
         message(404, "Pas votre burger.");
         exit();
     }
 
-    if (isset($_GET['nomBurger']) || isset($_GET['description'])) {
+    if (isset($_POST['nomBurger']) || isset($_POST['description'])) {
         $sql = 'update Burgers set ';
-        if (isset($_GET['nomBurger'])) {
+        if (isset($_POST['nomBurger'])) {
             $sql = $sql . 'nomBurger = :nomBurger';
         }
-        if (isset($_GET['description'])) {
-            if (isset($_GET['nomBurger'])) {
+        if (isset($_POST['description'])) {
+            if (isset($_POST['nomBurger'])) {
                 $sql = $sql . ', ';
             }
             $sql = $sql . ' description = :description';
@@ -120,25 +119,25 @@ function update_burger()
         $sql = $sql . ' where idBurger = :idBurger';
 
         $sth = Connexion::$bdd->prepare($sql);
-        if (isset($_GET['nomBurger']))
-            $sth->bindParam(':nomBurger', $_GET['nomBurger'], PDO::PARAM_STR);
-        if (isset($_GET['description']))
-            $sth->bindParam(':description', $_GET['description'], PDO::PARAM_STR);
-        $sth->bindParam(':idBurger', $_GET['idBurger'], PDO::PARAM_INT);
+        if (isset($_POST['nomBurger']))
+            $sth->bindParam(':nomBurger', $_POST['nomBurger'], PDO::PARAM_STR);
+        if (isset($_POST['description']))
+            $sth->bindParam(':description', $_POST['description'], PDO::PARAM_STR);
+        $sth->bindParam(':idBurger', $_POST['idBurger'], PDO::PARAM_INT);
         $sth->execute();
     }
 
-    if (isset($_GET['ingredients'])) {
+    if (isset($_POST['ingredients'])) {
         $sth = Connexion::$bdd->prepare('DELETE FROM estCompose WHERE idBurger = ?');
-        $sth->execute(array($_GET['idBurger']));
-        add_ingredients_dans_burger($_GET['idBurger']);
+        $sth->execute(array($_POST['idBurger']));
+        add_ingredients_dans_burger($_POST['idBurger']);
     }
     message(200, "Burger modifie.");
 }
 
 function add_ingredients_dans_burger($id)
 {
-    $array = explode(",", $_GET['ingredients']);
+    $array = explode(",", $_POST['ingredients']);
     $sql = 'insert into estCompose Values';
 
     $arr = array();
@@ -171,19 +170,19 @@ function add_ingredients_dans_burger($id)
 
 function delete_burger()
 {
-    if (!isset($_GET['idBurger'])) {
+    if (!isset($_POST['idBurger'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burger&action=delete&idBurger=?");
         exit();
     }
     global $token;
     $burger = Connexion::$bdd->prepare('select * from Burgers where idBurger = ? and idUser = ?');
-    $burger->execute(array($_GET['idBurger'], $token['idUser']));
+    $burger->execute(array($_POST['idBurger'], $token['idUser']));
     if ($burger->rowCount() > 0) {
         $sth = Connexion::$bdd->prepare('DELETE FROM estCompose WHERE idBurger = ?');
-        $sth->execute(array($_GET['idBurger']));
+        $sth->execute(array($_POST['idBurger']));
 
         $sth = Connexion::$bdd->prepare('DELETE FROM Burgers WHERE idBurger = ?');
-        $sth->execute(array($_GET['idBurger']));
+        $sth->execute(array($_POST['idBurger']));
         message(200, "Burger supprime.");
     } else {
         message(404, 'Burger pas trouve ou pas le votre');

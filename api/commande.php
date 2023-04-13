@@ -18,17 +18,17 @@ function get_commandes()
 
 function get_commande()
 {
-    if (!isset($_GET['idCommande'])) {
+    if (!isset($_POST['idCommande'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=get&idCommande=?");
         exit();
     }
     global $token;
     $sth = Connexion::$bdd->prepare('select idCommande, finit, dateCommande, prix from Commande where idCommande = ? and idUser = ?');
-    $sth->execute(array($_GET['idCommande'], $token['idUser']));
+    $sth->execute(array($_POST['idCommande'], $token['idUser']));
     if ($sth->rowCount() > 0) {
         $commande = $sth->fetch();
         $sth = Connexion::$bdd->prepare('select idBurger, nomBurger, prix, quantite, (prix * quantite) as total from Contient natural join Burgers where idCommande = ?');
-        $sth->execute(array($_GET['idCommande']));
+        $sth->execute(array($_POST['idCommande']));
         $commande['burgers'] = $sth->fetchAll();
         http_response_code(200);
         echo json_encode($commande);
@@ -39,7 +39,7 @@ function get_commande()
 
 function add_commande()
 {
-    if (!isset($_GET['idBurgers'])) {
+    if (!isset($_POST['idBurgers'])) {
         message(400, "La requete n'est pas valide, vérifiez l'url. Exemple : http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/commande&action=add&idBurgers=?,?,?");
         exit();
     }
@@ -52,7 +52,7 @@ function add_commande()
         $sth->execute(array($token['idUser']));
 
         $id = Connexion::$bdd->lastInsertId();
-        $array = explode(",", $_GET['idBurgers']);
+        $array = explode(",", $_POST['idBurgers']);
         $sql = 'insert into Contient Values';
 
         $arr = array();
