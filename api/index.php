@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+define("lala", "layn");
+
 include_once('connexion.php');
 include_once('utilisateur.php');
 include_once('burger.php');
@@ -33,7 +35,7 @@ try {
                     connexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
                     break;
                 case "burgers":
-                        get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers
+                    get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers
                     break;
                 default:
                     message(400, "La requete n'est pas valide, verifiez l'url. Vous devez vous connecter ou token invalide");

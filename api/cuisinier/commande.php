@@ -2,6 +2,9 @@
 header('Content-type: application/json; charset=utf-8');
 
 
+if (constant("lala") != "layn")
+    die("wrong constant");
+
 function get_commandes_a_faire()
 {
     $commandes = Connexion::$bdd->prepare('select idCommande, finit, dateCommande, prix from Commande where finit = 0 order by dateCommande');

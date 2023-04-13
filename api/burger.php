@@ -1,6 +1,10 @@
 <?php
 header('Content-type: application/json; charset=utf-8');
 
+
+if (constant("lala") != "layn")
+    die("wrong constant");
+
 function get_burgers()
 {
     global $token;
@@ -108,16 +112,16 @@ function update_burger()
         if (isset($_POST['nomBurger'])) {
             $sql = $sql . 'nomBurger = :nomBurger,';
         }
-        if (isset($_POST['description'])) { 
+        if (isset($_POST['description'])) {
             $sql = $sql . ' description = :description,';
         }
 
-        if (isset($_POST['prix'])) { 
+        if (isset($_POST['prix'])) {
             $sql = $sql . ' prix = :prix';
         }
-        
+
         if (substr($sql, -1) == ',')
-            substr($string, 0, -1);
+            substr($sql, 0, -1);
         $sql = $sql . ' where idBurger = :idBurger';
 
         $sth = Connexion::$bdd->prepare($sql);

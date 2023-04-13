@@ -2,6 +2,9 @@
 header('Content-type: application/json; charset=utf-8');
 
 
+if (constant("lala") != "layn")
+    die("wrong constant");
+
 function get_ingredients()
 {
     $sth = Connexion::$bdd->prepare('select * from Ingredients');

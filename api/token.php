@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+
+if (constant("lala") != "layn")
+    die("wrong constant");
+
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 

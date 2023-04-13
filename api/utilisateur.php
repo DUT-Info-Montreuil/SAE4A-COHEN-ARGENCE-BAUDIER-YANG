@@ -1,6 +1,10 @@
 <?php
 header('Content-type: application/json; charset=utf-8');
 
+
+if (constant("lala") != "layn")
+    die("wrong constant");
+
 function mdp_correcte()
 {
     $containsLowerCaseLetter  = preg_match('/[a-z]/', $_POST['mdp']);
@@ -10,7 +14,8 @@ function mdp_correcte()
     return $containsLowerCaseLetter && $containsUpperCaseLetter && $containsDigit && $correctSize;
 }
 
-function adresse_correcte() {
+function adresse_correcte()
+{
     // Vérifier la validité de la syntaxe de l'adresse
     if (!preg_match('/^[a-zA-Z0-9\s-]+$/', $_POST['adresse'])) {
         return false;

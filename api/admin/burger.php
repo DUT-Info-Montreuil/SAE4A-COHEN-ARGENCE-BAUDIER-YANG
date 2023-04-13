@@ -1,6 +1,9 @@
 <?php
 header('Content-type: application/json; charset=utf-8');
 
+if (constant("lala") != "layn")
+    die("wrong constant");
+
 function supp_burger()
 {
     if (!isset($_POST['idBurger'])) {
