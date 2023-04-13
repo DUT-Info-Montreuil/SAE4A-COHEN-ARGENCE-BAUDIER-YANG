@@ -59,6 +59,7 @@ function message($code, $message)
 function admin()
 {
     include_once('admin/ingredient.php');
+    include_once('admin/burger.php');
     switch ($_POST['requete']) {
         case "admin_ingredient":
             if (isset($_POST['action'])) {
@@ -81,6 +82,9 @@ function admin()
             } else {
                 message(400, "La requete n'est pas valide, verifiez l'url. Manque la variable action.");
             }
+        case "delete_burger":
+            supp_burger(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/delete_burger&idBurger=?
+            return true;
     }
 }
 

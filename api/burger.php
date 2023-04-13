@@ -4,7 +4,7 @@ header('Content-type: application/json; charset=utf-8');
 function get_burgers()
 {
     global $token;
-    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idType = 2 or idUser = ?');
+    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idType = 1 or idUser = ?');
     $burgers->execute(array($token['idUser']));
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
@@ -17,7 +17,7 @@ function get_burgers()
 
 function get_burgers_classiques()
 {
-    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idType = 2');
+    $burgers = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idType = 1');
     $burgers->execute();
     if ($burgers->rowCount() > 0) {
         http_response_code(200);
@@ -79,13 +79,11 @@ function add_burger()
 
         $id = Connexion::$bdd->lastInsertId();
         add_ingredients_dans_burger($id);
-        http_response_code(200);
-        $burger = Connexion::$bdd->prepare('select idBurger, nomBurger, description, prix from Burgers natural join Utilisateurs where idBurger = ? and (idUser = ? or idType = 2)');
-        $burger->execute(array($id, $token['idUser']));
-        echo json_encode($burger->fetch());
         Connexion::$bdd->commit();
+        message(200, 'Burger ajoute.');
     } catch (PDOException $e) {
         Connexion::$bdd->rollBack();
+        message(404, 'Erreur lors de l\'insertion.');
         throw $e;
     }
 }
