@@ -33,8 +33,7 @@ try {
                     connexion(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/connexion&login=?&mdp=?
                     break;
                 case "burgers":
-                    if (isset($_POST['categorie']) && $_POST['categorie'] == 'classique')
-                        get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers&categorie=classique
+                        get_burgers_classiques(); //http://localhost/SAE4A-COHEN-ARGENCE-BAUDIER-YANG/api/burgers
                     break;
                 default:
                     message(400, "La requete n'est pas valide, verifiez l'url. Vous devez vous connecter ou token invalide");
